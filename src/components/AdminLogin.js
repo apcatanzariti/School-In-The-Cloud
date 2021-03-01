@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { setActiveAdmin } from './../actions/action';
 
-function AdminLogin () {
+function AdminLogin (props) {
     const [credentials, setCredentials] = useState({
         username: '',
         password: ''
@@ -28,6 +30,7 @@ function AdminLogin () {
             setError('Username and Password must be filled out');
         } else {
             setError('');
+            props.setActiveAdmin(credentials);
             history.push('/admin-dash');
         }
 
@@ -74,7 +77,14 @@ function AdminLogin () {
     );
 };
 
-export default AdminLogin;
+function mapStateToProps (state) {
+    return {
+        activeAdmin: state.activeAdmin
+    };
+};
+
+export default connect(mapStateToProps, {setActiveAdmin})(AdminLogin);
+//export default AdminLogin;
 
 const StyledAdminContainer = styled.div`
     // border: solid 1px red;
