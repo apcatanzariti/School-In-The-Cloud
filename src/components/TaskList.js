@@ -34,7 +34,7 @@ function TaskListItem(props) {
     return (
         <StyledTaskListItemDiv>
             <div className='description-row'>
-                <h3 className='description'>{description}</h3>
+                <p className='description'>{description}</p>
             </div>
             <div className="creator">
                 <p>{creator}</p>
@@ -61,15 +61,12 @@ const StyledTaskListItemDiv = styled.div`
         border-bottom: none;
     }
 
-    h3, p {
+    p {
         margin: 5px 0;
     }
 
-    h3 {
-        font-weight: normal;
-    }
-
-    .description-row {
+    .description {
+        font-size: 1.25em;
     }
 
     .creator {
