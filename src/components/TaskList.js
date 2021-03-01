@@ -33,12 +33,8 @@ function TaskListItem(props) {
 
     return (
         <StyledTaskListItemDiv>
-            <div className='description-row'>
-                <p className='description'>{description}</p>
-            </div>
-            <div className="creator">
-                <p>{creator}</p>
-            </div>
+            <p className='description'>{description}</p>
+            <p className='creator'>{creator}</p>
         </StyledTaskListItemDiv>
     )
 }
