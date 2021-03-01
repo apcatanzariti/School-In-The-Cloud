@@ -28,7 +28,7 @@ function AdminLogin () {
             setError('Username and Password must be filled out');
         } else {
             setError('');
-            console.log('Admin logged in!');
+            history.push('/admin-dash');
         }
 
         // axios

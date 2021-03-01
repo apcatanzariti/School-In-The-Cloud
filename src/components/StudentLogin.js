@@ -28,7 +28,7 @@ function StudentLogin () {
             setError('Username and Password must be filled out');
         } else {
             setError('');
-            console.log('Student logged in!');
+            history.push('/student-dash');
         }
 
         // axios

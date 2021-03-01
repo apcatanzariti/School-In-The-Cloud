@@ -28,7 +28,7 @@ function VolunteerLogin () {
             setError('Username and Password must be filled out');
         } else {
             setError('');
-            console.log('Volunteer logged in!');
+            history.push('/volunteer-dash');
         }
 
         // axios
