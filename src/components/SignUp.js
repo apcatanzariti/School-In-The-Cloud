@@ -108,7 +108,7 @@ export default SignUp;
 
 const StyledSignUpContainer = styled.div`
     // border: solid 1px red;
-    padding: 5.8% 0% 5.8% 0%;
+    padding: 5% 0% 5% 0%;
     width: 60%;
     text-align: center;
     box-shadow: 0px 0px 10px lightgray;

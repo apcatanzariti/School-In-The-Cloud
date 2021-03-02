@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { setActiveAdmin } from '../actions/action';
+import { setActiveAdmin } from './../actions/index';
 
 function AdminLogin (props) {
     const [credentials, setCredentials] = useState({

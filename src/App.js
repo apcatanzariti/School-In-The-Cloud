@@ -6,7 +6,6 @@ import StudentDash from './components/StudentDash';
 import VolunteerDash from './components/VolunteerDash';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import VolunteerLogin from './components/VolunteerLogin';
 import Footer from './components/Footer';
 
 function App() {
