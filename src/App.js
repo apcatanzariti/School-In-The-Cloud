@@ -1,3 +1,4 @@
+
 import { Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from './components/NavBar';
@@ -7,48 +8,97 @@ import VolunteerDash from './components/VolunteerDash';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Footer from './components/Footer';
+// for searchbar
+import { useState, useEffect } from "react";
+import SearchBar from "./utils/Search";
+
+const data = [
+  {
+    id: 0,
+    name: "patrick",
+    age: 24,
+    location: "Bradenton, FL",
+  },
+  {
+    id: 1,
+    name: "Karen",
+    age: 24,
+    location: "Hudson, NY",
+  },
+  {
+    id: 2,
+    name: "Jessica",
+    age: 42,
+    location: "Boise, ID",
+  },
+  {
+    id: 3,
+    name: "Frank",
+    age: 35,
+    location: "St.Louis, MO",
+  },
+  {
+    id: 4,
+    name: "Xavier",
+    age: 55,
+    location: "Los Vegas",
+  },
+];
 
 function App() {
+  const [teamList, setTeamList] = useState([]);
+
+  useEffect(() => {
+    // setTeamList(data);
+  }, []);
+
   return (
     <StyledAppContainer>
-
       <NavBar />
-
+      <SearchBar teamList={teamList} />
       <Switch>
-
-        <Route path='/admin-dash'>
+        <Route path="/admin-dash">
           <AdminDash />
         </Route>
 
-        <Route path='/student-dash'>
+        <Route path="/student-dash">
           <StudentDash />
         </Route>
 
-        <Route path='/volunteer-dash'>
+        <Route path="/volunteer-dash">
           <VolunteerDash />
         </Route>
 
-        <Route path='/'>
-
+        <Route path="/">
           <StyledIntroDiv>
             <div>
               <h2>Who We Are:</h2>
-              <p><span>School in the Cloud</span> is a platform that trains senior volunteers to teach students in a group or individual setting. This helps kids in communities with high student to teacher ratios. It also provides retired volunteers a sense of purpose and meaning in their day to day life when they find themselves with more free time. The platform also connects volunteers with the students.
+              <p>
+                <span>School in the Cloud</span> is a platform that trains
+                senior volunteers to teach students in a group or individual
+                setting. This helps kids in communities with high student to
+                teacher ratios. It also provides retired volunteers a sense of
+                purpose and meaning in their day to day life when they find
+                themselves with more free time. The platform also connects
+                volunteers with the students.
               </p>
             </div>
-            <img src='https://heavy.com/wp-content/uploads/2020/08/Laptops-for-Middle-School-Students.jpg?quality=65&strip=all' alt='student studying' />
+            <img
+              src="https://heavy.com/wp-content/uploads/2020/08/Laptops-for-Middle-School-Students.jpg?quality=65&strip=all"
+              alt="student studying"
+            />
           </StyledIntroDiv>
 
           <StyledLoginContainer>
+
           <Login />
           <SignUp />
+
           </StyledLoginContainer>
         </Route>
-
       </Switch>
 
       <Footer />
-
     </StyledAppContainer>
   );
 }
@@ -87,13 +137,13 @@ const StyledIntroDiv = styled.div`
   color: #5d5d5d;
 
   span {
-    color: #0096DB;
+    color: #0096db;
   }
 
   div {
     padding: 0% 7% 0% 7%;
   }
-  
+
   img {
     width: 60%;
   }
