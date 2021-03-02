@@ -88,14 +88,14 @@ export default connect(mapStateToProps, {setActiveAdmin})(AdminLogin);
 
 const StyledLoginContainer = styled.div`
     // border: solid 1px red;
-    padding: 8% 0% 8% 0%;
+    padding: 7.5% 0% 7.5% 0%;
     width: 30%;
     text-align: center;
     box-shadow: 0px 0px 10px lightgray;
     border-radius: 5px;
 
     input {
-        padding: 1%;
+        padding: 2%;
         width: 60%;
         margin-bottom: 6%;
         outline: none;

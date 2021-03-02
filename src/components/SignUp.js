@@ -90,7 +90,7 @@ function SignUp () {
                 </div>
 
                 <button>{`${activeForm} Register`}</button>
-                <button className='cancel' onClick={e => {e.stopPropagation(); setActiveForm('');}}>Cancel</button>
+                <button className='cancel' onClick={e => {e.stopPropagation(); setActiveForm(''); setError('');}}>Cancel</button>
 
                 {
                     error === '' ? null : 
