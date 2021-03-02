@@ -63,8 +63,4 @@ const StyledVolunteerListItemDiv = styled.div`
     .name {
         font-size: 1.2em;
     }
-
-    .creator {
-        color: gray;
-    }
 `;
