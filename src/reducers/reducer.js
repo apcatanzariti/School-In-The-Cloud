@@ -1,4 +1,4 @@
-import { SET_ACTIVE_ADMIN, ADD_TASK } from './../actions/action';
+import { SET_ACTIVE_ADMIN, ADD_TASK, DELETE_TASK } from './../actions/action';
 
 const initialState = {
     activeAdmin: '',
@@ -8,14 +8,17 @@ const initialState = {
         name: '',
         taskList: [
             {
+                id: '1',
                 title: 'task 1',
                 description: 'Do something!'
             },
             {
+                id: '2',
                 title: 'task 2',
                 description: 'Do something else!'
             },
             {
+                id: '3',
                 title: 'task 3',
                 description: 'Do a third thing!'
             }
@@ -37,6 +40,12 @@ export const reducer = (state = initialState, action) => {
                 admin: {
                     taskList: [...state.admin.taskList, action.payload]
                 }
+            });
+
+        case DELETE_TASK:
+            return({
+                ...state,
+                // filter through and include only tasks with IDs that DO NOT match the payload
             });
 
         default:

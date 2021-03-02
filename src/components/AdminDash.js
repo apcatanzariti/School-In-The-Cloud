@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { addTask } from './../actions/action';
+import Task from './Task';
 
 function AdminDash (props) {
     const [task, setTask] = useState({
+        id: Date.now(),
         title: '',
         description: ''
     });
@@ -31,6 +33,11 @@ function AdminDash (props) {
                 description: ''
             });
         }
+    };
+
+    function handleDelete (id) {
+        // this will eventually do some actual deleting
+        console.log(`the task with the id of: ${id} was deleted!`);
     };
 
     // function submitNewTask(e) {
@@ -61,9 +68,9 @@ function AdminDash (props) {
 
                     props.taskList.map(item => {
                         return (
+                            props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
                             <>
-                                <div><b>{item.title}</b></div>
-                                <div>{item.description}</div><br />
+                            <Task item={item} taskList={props.taskList} handleDelete={handleDelete}/>
                             </>
                         );
                     })
@@ -102,7 +109,7 @@ function AdminDash (props) {
 function mapStateToProps (state) {
     return {
         activeAdmin: state.activeAdmin,
-        taskList: state.admin.taskList        
+        taskList: state.admin.taskList     
     };
 };
 
@@ -119,6 +126,21 @@ const StyledLeftSide = styled.div`
     padding: 3%;
     width: 47%;
     box-shadow: 0px 5px 8px lightgray;
+
+    button {
+        border: solid 1px #0096DB;
+        color: #0096DB;
+        background-color: white;
+        padding: 2% 4% 2% 4%;
+        transition: .3s;
+        cursor: pointer;
+        outline: none;
+    }
+
+    button:hover {
+        background-color: #0096DB;
+        color: white;
+    }
 `;
 
 const StyledRightSide = styled.div`
