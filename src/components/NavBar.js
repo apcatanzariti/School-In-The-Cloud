@@ -38,9 +38,7 @@ function NavBar () {
           <StyledLink>Volunteer Dashboard</StyledLink>
         </Link>
 
-        <Link to="/">
-          <StyledLink>Logout</StyledLink>
-        </Link>
+          <StyledLogOut onClick={e => {e.stopPropagation(); logOut();}}>Logout</StyledLogOut>
       </StyledLinksDiv>
     </StyledNavContainer>
   );

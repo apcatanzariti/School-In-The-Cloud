@@ -4,9 +4,8 @@ import NavBar from './components/NavBar';
 import AdminDash from './components/AdminDash';
 import StudentDash from './components/StudentDash';
 import VolunteerDash from './components/VolunteerDash';
-import AdminLogin from './components/AdminLogin';
-import StudentLogin from './components/StudentLogin';
-import VolunteerLogin from './components/VolunteerLogin';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
 import Footer from './components/Footer';
 
 function App() {
@@ -41,9 +40,8 @@ function App() {
           </StyledIntroDiv>
 
           <StyledLoginContainer>
-          <AdminLogin />
-          <StudentLogin />
-          <VolunteerLogin />
+          <Login />
+          <SignUp />
           </StyledLoginContainer>
         </Route>
 
