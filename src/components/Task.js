@@ -14,7 +14,7 @@ function Task (props) {
 
     const handleEditClick = (e) => {
         e.stopPropagation();
-        handleEdit(item.id);
+        handleEdit(item);
     };    
 
     return(

@@ -2,6 +2,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
+
+
+/**
+ * Modal is a generalized component that you can use for anything. Needs open and setOpen properties to work correctly.
+ * Can be used like this:
+ * 
+ * <Modal open={modalOpen} setOpen={setModalOpen}>
+ *   <p> My thing </p>
+ * </Modal>
+ */
+
 function Modal(props) {
     const { open, setOpen, children } = props;
 
@@ -13,7 +24,9 @@ function Modal(props) {
 
     return (
         <ModalDiv onClick={close}>
-            {children}
+            <div className='children' onClick={e => e.stopPropagation()}>
+                {children}
+            </div>
         </ModalDiv>
     );
 }
@@ -37,4 +50,11 @@ const ModalDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .children {
+        cursor: default;
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+    }
 `;
