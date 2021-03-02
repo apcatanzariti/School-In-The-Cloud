@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { setActiveAdmin } from '../actions/action';
 
-function StudentLogin () {
+function AdminLogin (props) {
     const [credentials, setCredentials] = useState({
         username: '',
         password: ''
@@ -28,14 +30,15 @@ function StudentLogin () {
             setError('Username and Password must be filled out');
         } else {
             setError('');
-            history.push('/student-dash');
+            props.setActiveAdmin(credentials);
+            history.push('/admin-dash');
         }
 
         // axios
         // .post('http://localhost:5000/api/login', credentials)
         // .then(res => {
         //     localStorage.setItem('token', JSON.stringify(res.data.payload));
-        //     history.push('/student-dash');
+        //     history.push('/admin-dash');
         // })
         // .catch(err => {
         //     setError(err.response.data.error);
@@ -43,8 +46,8 @@ function StudentLogin () {
     };
 
     return(
-        <StyledStudentContainer>
-            <h3>Student Login Form</h3>
+        <StyledLoginContainer>
+            <h3>Sign In Here:</h3>
 
             <form onSubmit={handleSubmit}>
 
@@ -66,20 +69,25 @@ function StudentLogin () {
                 onChange={handleChange}/>
                 </div>
 
-                <button>Student Sign In</button>
+                <button>Sign In</button>
                 <center><StyledError>{error}</StyledError></center>
 
             </form>
-        </StyledStudentContainer>
+        </StyledLoginContainer>
     );
 };
 
-export default StudentLogin;
+function mapStateToProps (state) {
+    return {
+        activeAdmin: state.activeAdmin
+    };
+};
 
-const StyledStudentContainer = styled.div`
+export default connect(mapStateToProps, {setActiveAdmin})(AdminLogin);
+//export default AdminLogin;
+
+const StyledLoginContainer = styled.div`
     // border: solid 1px red;
-    // border-left: solid 1px #0096DB;
-    // border-right: solid 1px #0096DB;
     padding: 8% 0% 8% 0%;
     width: 30%;
     text-align: center;
