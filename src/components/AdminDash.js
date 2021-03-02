@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { addTask } from './../actions/action';
 import Task from './Task';
+import Modal from './Modal';
 
 function AdminDash (props) {
     const [task, setTask] = useState({
@@ -12,6 +13,7 @@ function AdminDash (props) {
     });
 
     const [error, setError] = useState('');
+    const [editModalOpen, setEditModalOpen] = useState(true);
 
     function handleChange (e) {
         setTask({
@@ -102,6 +104,9 @@ function AdminDash (props) {
                     <StyledError>{error}</StyledError>
                 </form>
             </StyledRightSide>
+            <Modal open={editModalOpen} setOpen={setEditModalOpen}>
+                This is where you edit the modal haha
+            </Modal>
         </StyledDashContainer>
     );
 };
