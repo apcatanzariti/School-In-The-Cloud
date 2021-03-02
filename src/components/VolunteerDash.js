@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import TaskList from './TaskList';
 
 const dummyTasks = [
-    { description: 'Buy pizza and chips for party', creator: 'Me' },
-    { description: 'Update student info', creator: 'Anthony' },
-    { description: 'Help out student with math homework', creator: 'Pat' },
-    { description: 'Fry an egg', creator: 'Jon' },
-]
+    { description: 'Buy pizza and chips for party', creator: 'Me', id: '2349' },
+    { description: 'Update student info', creator: 'Anthony', id: '6012' },
+    { description: 'Help out student with math homework', creator: 'Pat', id: '1425' },
+    { description: 'Fry an egg', creator: 'Jon', id: '8040' },
+];
 
 function VolunteerDash () {
 

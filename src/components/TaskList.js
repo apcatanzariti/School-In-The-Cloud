@@ -17,7 +17,7 @@ function TaskList(props) {
     return (
         <StyledTaskListDiv>
             {tasks.map(task => (
-                <TaskListItem task={task} />
+                <TaskListItem task={task} key={task.id} />
             ))}
         </StyledTaskListDiv>
     )
@@ -29,7 +29,7 @@ export default TaskList;
 
 function TaskListItem(props) {
 
-    const { description, creator, isDone } = props.task;
+    const { description, creator } = props.task;
 
     return (
         <StyledTaskListItemDiv>
@@ -62,7 +62,7 @@ const StyledTaskListItemDiv = styled.div`
     }
 
     .description {
-        font-size: 1.25em;
+        font-size: 1.2em;
     }
 
     .creator {
