@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { setActiveAdmin } from './../actions/action';
+import signUp from './validation/signUpSchema.js'
 
-function StudentLogin () {
+function AdminLogin (props) {
     const [credentials, setCredentials] = useState({
         username: '',
         password: ''
     });
 
-    const [error, setError] = useState('');
+    const [error, setError] = useState();
+
+    const [disabled, setDisabled] = useState(true)
 
     const history = useHistory();
 
@@ -22,29 +27,34 @@ function StudentLogin () {
 
     function handleSubmit (e) {
         e.preventDefault();
-
-        // the 'else' portion of this will be replaced by the axios call
-        if (credentials.username === '' || credentials.password === '') {
-            setError('Username and Password must be filled out');
-        } else {
-            setError('');
-            history.push('/student-dash');
-        }
+        props.setActiveAdmin(credentials);
+        history.push('/admin-dash');
 
         // axios
         // .post('http://localhost:5000/api/login', credentials)
         // .then(res => {
         //     localStorage.setItem('token', JSON.stringify(res.data.payload));
-        //     history.push('/student-dash');
+        //     history.push('/admin-dash');
         // })
         // .catch(err => {
         //     setError(err.response.data.error);
         // })
     };
 
+    useEffect(() => {
+        signUp.isValid(credentials).then(valid => setDisabled(!valid))
+        signUp.validate(credentials)
+            .then(()=>{
+                setError('');
+            })
+            .catch((err)=>{
+                setError(err.errors[0])
+            })
+    }, [credentials])
+
     return(
-        <StyledStudentContainer>
-            <h3>Student Login Form</h3>
+        <StyledLoginContainer>
+            <h3>Sign In Here:</h3>
 
             <form onSubmit={handleSubmit}>
 
@@ -65,29 +75,34 @@ function StudentLogin () {
                 value={credentials.password}
                 onChange={handleChange}/>
                 </div>
-
-                <button>Student Sign In</button>
+                
+                <button disabled={disabled}>Sign In</button>
                 <center><StyledError>{error}</StyledError></center>
 
             </form>
-        </StyledStudentContainer>
+        </StyledLoginContainer>
     );
 };
 
-export default StudentLogin;
+function mapStateToProps (state) {
+    return {
+        activeAdmin: state.activeAdmin
+    };
+};
 
-const StyledStudentContainer = styled.div`
+export default connect(mapStateToProps, {setActiveAdmin})(AdminLogin);
+//export default AdminLogin;
+
+const StyledLoginContainer = styled.div`
     // border: solid 1px red;
-    // border-left: solid 1px #0096DB;
-    // border-right: solid 1px #0096DB;
-    padding: 8% 0% 8% 0%;
+    padding: 7.5% 0% 7.5% 0%;
     width: 30%;
     text-align: center;
     box-shadow: 0px 0px 10px lightgray;
     border-radius: 5px;
 
     input {
-        padding: 1%;
+        padding: 2%;
         width: 60%;
         margin-bottom: 6%;
         outline: none;
@@ -99,11 +114,17 @@ const StyledStudentContainer = styled.div`
         background-color: white;
         padding: 2% 4% 2% 4%;
         transition: .3s;
-        cursor: pointer;
         outline: none;
     }
 
-    button:hover {
+    button:disabled{
+        border: solid 1px red;
+        color: red;
+        cursor: not-allowed;
+    }
+
+    button:hover:enabled {
+        cursor: pointer;
         background-color: #0096DB;
         color: white;
     }
