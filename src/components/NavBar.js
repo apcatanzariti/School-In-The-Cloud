@@ -1,8 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 function NavBar () {
+
+    const history = useHistory();
+
+    const logOut = () => {
+        console.log('You logged out 👍');
+        // localStorage.removeItem('token');
+        // history.push('/');
+    };
+
     return(
         <StyledNavContainer>
 
@@ -26,9 +35,7 @@ function NavBar () {
                     <StyledLink>Volunteer Dashboard</StyledLink>
                 </Link>
 
-                <Link to='/'>
-                    <StyledLink>Logout</StyledLink>
-                </Link>
+                <StyledLogOut onClick={logOut}>Logout</StyledLogOut>
 
             </StyledLinksDiv>
 
@@ -73,6 +80,17 @@ const StyledLinksDiv = styled.div`
 `;
 
 const StyledLink = styled.div`
-    border-radius: 5px;
     padding: 7px 12px 7px 12px;
+`;
+
+const StyledLogOut = styled.div`
+    color: #0096DB;
+    padding: 7px 12px 7px 12px;
+    cursor: pointer;
+    transition: .3s;
+
+    :hover {
+        color: white;
+        background-color: #0096DB;
+    }
 `;
