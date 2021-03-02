@@ -16,7 +16,7 @@ function App() {
 
       <Switch>
 
-        <Route path='/admin-dash' component={AdminDash}>
+        <Route path='/admin-dash'>
           <AdminDash />
         </Route>
 
