@@ -24,7 +24,7 @@ function Modal(props) {
 
     return (
         <ModalDiv onClick={close}>
-            <div className='children' onClick={e => e.stopPropagation()}>
+            <div className='children-div' onClick={e => e.stopPropagation()}>
                 {children}
             </div>
         </ModalDiv>
@@ -51,10 +51,11 @@ const ModalDiv = styled.div`
     justify-content: center;
     align-items: center;
 
-    .children {
+    .children-div {
         cursor: default;
         background: white;
         padding: 10px;
         border-radius: 5px;
+        box-shadow: 2px 4px 4px 1px hsla(0, 0%, 0%, 0.2);
     }
 `;
