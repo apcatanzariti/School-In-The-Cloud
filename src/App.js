@@ -1,14 +1,13 @@
-import { Switch, Route } from "react-router-dom";
-import styled from "styled-components";
-import NavBar from "./components/NavBar";
-import AdminDash from "./components/AdminDash";
-import StudentDash from "./components/StudentDash";
-import VolunteerDash from "./components/VolunteerDash";
-import AdminLogin from "./components/AdminLogin";
-import StudentLogin from "./components/StudentLogin";
-import VolunteerLogin from "./components/VolunteerLogin";
-import Footer from "./components/Footer";
 
+import { Switch, Route } from 'react-router-dom';
+import styled from 'styled-components';
+import NavBar from './components/NavBar';
+import AdminDash from './components/AdminDash';
+import StudentDash from './components/StudentDash';
+import VolunteerDash from './components/VolunteerDash';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
+import Footer from './components/Footer';
 // for searchbar
 import { useState, useEffect } from "react";
 import SearchBar from "./utils/Search";
@@ -83,37 +82,6 @@ function App() {
                 themselves with more free time. The platform also connects
                 volunteers with the students.
               </p>
-
-              {/* {searchTerm.length < 1 ? ( //if search bar is empty then render all the names
-                teamList.map((team) => {
-                  return (
-                    <div className={team.id}>
-                      <h4>{team.name}</h4>
-                      <p>
-                        Age:{team.age}
-                        <br />
-                        Location: {team.location}
-                      </p>
-                    </div>
-                  );
-                })
-              ) : results.length < 1 ? (
-                <h5>No Result Available</h5> //if the result is not found then the user will see this message
-              ) : (
-                results.map((team) => {
-                  //if we start typing into the search bar only render the info that includes the keywords entered into the searchbar
-                  return (
-                    <div className={team.id}>
-                      <h4>{team.name}</h4>
-                      <p>
-                        Age:{team.age}
-                        <br />
-                        Location: {team.location}
-                      </p>
-                    </div>
-                  );
-                })
-              )} */}
             </div>
             <img
               src="https://heavy.com/wp-content/uploads/2020/08/Laptops-for-Middle-School-Students.jpg?quality=65&strip=all"
@@ -122,9 +90,10 @@ function App() {
           </StyledIntroDiv>
 
           <StyledLoginContainer>
-            <AdminLogin />
-            <StudentLogin />
-            <VolunteerLogin />
+
+          <Login />
+          <SignUp />
+
           </StyledLoginContainer>
         </Route>
       </Switch>

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { setActiveAdmin } from './../actions/index';
 
-function VolunteerLogin () {
+function AdminLogin (props) {
     const [credentials, setCredentials] = useState({
         username: '',
         password: ''
@@ -28,14 +30,15 @@ function VolunteerLogin () {
             setError('Username and Password must be filled out');
         } else {
             setError('');
-            history.push('/volunteer-dash');
+            props.setActiveAdmin(credentials);
+            history.push('/admin-dash');
         }
 
         // axios
         // .post('http://localhost:5000/api/login', credentials)
         // .then(res => {
         //     localStorage.setItem('token', JSON.stringify(res.data.payload));
-        //     history.push('/volunteer-dash');
+        //     history.push('/admin-dash');
         // })
         // .catch(err => {
         //     setError(err.response.data.error);
@@ -43,8 +46,8 @@ function VolunteerLogin () {
     };
 
     return(
-        <StyledVolunteerContainer>
-            <h3>Volunteer Login Form</h3>
+        <StyledLoginContainer>
+            <h3>Sign In Here:</h3>
 
             <form onSubmit={handleSubmit}>
 
@@ -66,26 +69,33 @@ function VolunteerLogin () {
                 onChange={handleChange}/>
                 </div>
 
-                <button>Volunteer Sign In</button>
+                <button>Sign In</button>
                 <center><StyledError>{error}</StyledError></center>
 
             </form>
-        </StyledVolunteerContainer>
+        </StyledLoginContainer>
     );
 };
 
-export default VolunteerLogin;
+function mapStateToProps (state) {
+    return {
+        activeAdmin: state.activeAdmin
+    };
+};
 
-const StyledVolunteerContainer = styled.div`
+export default connect(mapStateToProps, {setActiveAdmin})(AdminLogin);
+//export default AdminLogin;
+
+const StyledLoginContainer = styled.div`
     // border: solid 1px red;
-    padding: 8% 0% 8% 0%;
+    padding: 7.5% 0% 7.5% 0%;
     width: 30%;
     text-align: center;
     box-shadow: 0px 0px 10px lightgray;
     border-radius: 5px;
 
     input {
-        padding: 1%;
+        padding: 2%;
         width: 60%;
         margin-bottom: 6%;
         outline: none;
