@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { addTask } from './../actions/action';
+import { addTask } from './../actions/index';
 import Task from './Task';
 
 function AdminDash (props) {
