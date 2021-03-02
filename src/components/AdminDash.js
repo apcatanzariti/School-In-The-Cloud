@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { addTask } from './../actions/index';
 import Task from './Task';
+import Modal from './Modal';
+import EditTask from './EditTask';
 
 function AdminDash (props) {
     const [task, setTask] = useState({
@@ -12,6 +14,9 @@ function AdminDash (props) {
     });
 
     const [error, setError] = useState('');
+
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [taskBeingEdited, setTaskBeingEdited] = useState(null);
 
     function handleChange (e) {
         setTask({
@@ -39,6 +44,17 @@ function AdminDash (props) {
         // this will eventually do some actual deleting
         console.log(`the task with the id of: ${id} was deleted!`);
     };
+
+    function handleEdit(task) {
+        setTaskBeingEdited(task);
+        setEditModalOpen(true);
+    }
+
+    function saveTask(savedTask) {
+        const id = savedTask.id;
+        console.log(`saving changes to task with id: ${id}`, savedTask);
+        setEditModalOpen(false);
+    }
 
     // function submitNewTask(e) {
     //     e.preventDefault();
@@ -70,7 +86,7 @@ function AdminDash (props) {
                         return (
                             props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
                             <>
-                            <Task item={item} taskList={props.taskList} handleDelete={handleDelete}/>
+                            <Task item={item} taskList={props.taskList} handleDelete={handleDelete} handleEdit={handleEdit} />
                             </>
                         );
                     })
@@ -102,6 +118,9 @@ function AdminDash (props) {
                     <StyledError>{error}</StyledError>
                 </form>
             </StyledRightSide>
+            <Modal open={editModalOpen} setOpen={setEditModalOpen}>
+                <EditTask task={taskBeingEdited} saveTask={saveTask} />
+            </Modal>
         </StyledDashContainer>
     );
 };
