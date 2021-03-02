@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { setActiveAdmin } from './../actions/action';
+import signUp from './validation/signUpSchema.js'
 
 function AdminLogin (props) {
     const [credentials, setCredentials] = useState({
@@ -11,7 +12,9 @@ function AdminLogin (props) {
         password: ''
     });
 
-    const [error, setError] = useState('');
+    const [error, setError] = useState();
+
+    const [disabled, setDisabled] = useState(true)
 
     const history = useHistory();
 
@@ -24,15 +27,8 @@ function AdminLogin (props) {
 
     function handleSubmit (e) {
         e.preventDefault();
-
-        // the 'else' portion of this will be replaced by the axios call
-        if (credentials.username === '' || credentials.password === '') {
-            setError('Username and Password must be filled out');
-        } else {
-            setError('');
-            props.setActiveAdmin(credentials);
-            history.push('/admin-dash');
-        }
+        props.setActiveAdmin(credentials);
+        history.push('/admin-dash');
 
         // axios
         // .post('http://localhost:5000/api/login', credentials)
@@ -44,6 +40,17 @@ function AdminLogin (props) {
         //     setError(err.response.data.error);
         // })
     };
+
+    useEffect(() => {
+        signUp.isValid(credentials).then(valid => setDisabled(!valid))
+        signUp.validate(credentials)
+            .then(()=>{
+                setError('');
+            })
+            .catch((err)=>{
+                setError(err.errors[0])
+            })
+    }, [credentials])
 
     return(
         <StyledAdminContainer>
@@ -69,7 +76,7 @@ function AdminLogin (props) {
                 onChange={handleChange}/>
                 </div>
 
-                <button>Admin Sign In</button>
+                <button disabled={disabled}>Admin Sign In</button>
                 <center><StyledError>{error}</StyledError></center>
 
             </form>
@@ -107,11 +114,17 @@ const StyledAdminContainer = styled.div`
         background-color: white;
         padding: 2% 4% 2% 4%;
         transition: .3s;
-        cursor: pointer;
         outline: none;
     }
 
-    button:hover {
+    button:disabled{
+        border: solid 1px red;
+        color: red;
+        cursor: not-allowed;
+    }
+
+    button:hover:enabled {
+        cursor: pointer;
         background-color: #0096DB;
         color: white;
     }

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { addTask } from './../actions/action';
 import Task from './Task';
+import taskSchema from './validation/addTaskSchema.js'
 
 function AdminDash (props) {
     const [task, setTask] = useState({
@@ -11,7 +12,8 @@ function AdminDash (props) {
         description: ''
     });
 
-    const [error, setError] = useState('');
+    const [error, setError] = useState('Title is required.');
+    const [disabled, setDisabled] = useState(true)
 
     function handleChange (e) {
         setTask({
@@ -57,7 +59,17 @@ function AdminDash (props) {
     //         setIsAdding: false;
     //     }
     // };
-
+    useEffect(() => {
+        taskSchema.isValid(task).then(valid => setDisabled(!valid))
+        taskSchema.validate(task)
+            .then(()=>{
+                setError('');
+            })
+            .catch((err)=>{
+                setError(err.errors[0])
+            })
+    }, [task])
+    
     return(
         <StyledDashContainer>
             <StyledLeftSide>
@@ -98,7 +110,7 @@ function AdminDash (props) {
                         onChange={handleChange}/>
                     </div>
 
-                    <button>Add Task</button>
+                    <button disabled={disabled}>Add Task</button>
                     <StyledError>{error}</StyledError>
                 </form>
             </StyledRightSide>
@@ -170,12 +182,18 @@ const StyledRightSide = styled.div`
         background-color: white;
         padding: 2% 4% 2% 4%;
         transition: .3s;
-        cursor: pointer;
         outline: none;
     }
 
-    button:hover {
+    button:disabled{
+        border: solid 1px red;
+        color: red;
+        cursor: not-allowed;
+    }
+
+    button:hover:enabled {
         background-color: #0096DB;
+        cursor: pointer;
         color: white;
     }
 `;
