@@ -1,9 +1,12 @@
-import { FETCH_DATA, SET_ACTIVE_ADMIN, ADD_TASK, DELETE_TASK } from '../actions/index';
+import { FETCH_DATA, SET_ACTIVE_ADMIN, ADD_TASK, DELETE_TASK, FETCH_TASK_LOADING, FETCH_TASK_SUCCESS, FETCH_TASK_FAIL } from '../actions/index';
 
 export const initialState = {
   data: [],
   isLoading: false,
   error: "",
+  tasks: [],
+  isFetching: false,
+  fetchError: '',
   // the stuff below here will be changing
   activeAdmin: '',
     activeStudent: '',
@@ -57,6 +60,26 @@ const reducer = (state = initialState, action) => {
             return({
                 ...state,
                 // filter through and include only tasks with IDs that DO NOT match the payload
+            });
+
+        case FETCH_TASK_LOADING:
+            return ({
+                ...state,
+                isFetching: true
+            });
+  
+        case FETCH_TASK_SUCCESS:
+            return ({
+                ...state,
+                tasks: action.payload,
+                isFetching: false
+              });
+  
+        case FETCH_TASK_FAIL:
+            return ({
+                ...state,
+                isFetching: false,
+                fetchError: action.payload
             });
 
     case "*":
