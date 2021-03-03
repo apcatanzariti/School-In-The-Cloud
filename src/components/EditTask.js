@@ -49,6 +49,7 @@ function EditTask(props) {
                 <button>Save Changes</button>
                 <StyledError>{error}</StyledError>
             </form>
+            
         </EditTaskDiv>
     )
 }
