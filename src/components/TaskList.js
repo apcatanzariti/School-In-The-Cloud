@@ -29,10 +29,11 @@ export default TaskList;
 
 function TaskListItem(props) {
 
-    const { description, creator } = props.task;
+    const { title, description, creator } = props.task;
 
     return (
         <StyledTaskListItemDiv>
+            <p className='title'>{title}</p>
             <p className='description'>{description}</p>
             <p className='creator'>{creator}</p>
         </StyledTaskListItemDiv>
@@ -61,11 +62,13 @@ const StyledTaskListItemDiv = styled.div`
         margin: 5px 0;
     }
 
-    .description {
+    .title {
         font-size: 1.2em;
+        font-weight: bold;
     }
 
     .creator {
         color: gray;
+        font-style: italic;
     }
 `;
