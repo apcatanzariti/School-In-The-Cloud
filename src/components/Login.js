@@ -1,124 +1,126 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { setActiveAdmin } from './../actions/index';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { connect } from "react-redux";
+import { setActiveAdmin } from "./../actions/index";
 
-function AdminLogin (props) {
-    const [credentials, setCredentials] = useState({
-        username: '',
-        password: ''
+function AdminLogin(props) {
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+
+  const history = useHistory();
+
+  function handleChange(e) {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
     });
+  }
 
-    const [error, setError] = useState('');
+  function handleSubmit(e) {
+    e.preventDefault();
 
-    const history = useHistory();
+    // the 'else' portion of this will be replaced by the axios call
+    if (credentials.username === "" || credentials.password === "") {
+      setError("Username and Password must be filled out");
+    } else {
+      setError("");
+      props.setActiveAdmin(credentials);
+      history.push("/admin-dash");
+    }
 
-    function handleChange (e) {
-        setCredentials({
-            ...credentials,
-            [e.target.name]: e.target.value
-        });
-    };
+    // axios
+    // .post('http://localhost:5000/api/login', credentials)
+    // .then(res => {
+    //     localStorage.setItem('token', JSON.stringify(res.data.payload));
+    //     history.push('/admin-dash');
+    // })
+    // .catch(err => {
+    //     setError(err.response.data.error);
+    // })
+  }
 
-    function handleSubmit (e) {
-        e.preventDefault();
+  return (
+    <StyledLoginContainer>
+      <h3>Sign In Here:</h3>
 
-        // the 'else' portion of this will be replaced by the axios call
-        if (credentials.username === '' || credentials.password === '') {
-            setError('Username and Password must be filled out');
-        } else {
-            setError('');
-            props.setActiveAdmin(credentials);
-            history.push('/admin-dash');
-        }
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            name="username"
+            type="text"
+            placeholder="Username"
+            value={credentials.username}
+            onChange={handleChange}
+          />
+        </div>
 
-        // axios
-        // .post('http://localhost:5000/api/login', credentials)
-        // .then(res => {
-        //     localStorage.setItem('token', JSON.stringify(res.data.payload));
-        //     history.push('/admin-dash');
-        // })
-        // .catch(err => {
-        //     setError(err.response.data.error);
-        // })
-    };
+        <div>
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={credentials.password}
+            onChange={handleChange}
+          />
+        </div>
 
-    return(
-        <StyledLoginContainer>
-            <h3>Sign In Here:</h3>
+        <button>Sign In</button>
+        <center>
+          <StyledError>{error}</StyledError>
+        </center>
+      </form>
+    </StyledLoginContainer>
+  );
+}
 
-            <form onSubmit={handleSubmit}>
+function mapStateToProps(state) {
+  return {
+    activeAdmin: state.activeAdmin,
+  };
+}
 
-                <div>
-                <input 
-                name='username'
-                type='text'
-                placeholder='Username'
-                value={credentials.username}
-                onChange={handleChange}/>
-                </div>
-
-                <div>
-                <input 
-                name='password'
-                type='password'
-                placeholder='Password'
-                value={credentials.password}
-                onChange={handleChange}/>
-                </div>
-
-                <button>Sign In</button>
-                <center><StyledError>{error}</StyledError></center>
-
-            </form>
-        </StyledLoginContainer>
-    );
-};
-
-function mapStateToProps (state) {
-    return {
-        activeAdmin: state.activeAdmin
-    };
-};
-
-export default connect(mapStateToProps, {setActiveAdmin})(AdminLogin);
+export default connect(mapStateToProps, { setActiveAdmin })(AdminLogin);
 //export default AdminLogin;
 
 const StyledLoginContainer = styled.div`
-    // border: solid 1px red;
-    padding: 7.5% 0% 7.5% 0%;
-    width: 30%;
-    text-align: center;
-    box-shadow: 0px 0px 10px lightgray;
-    border-radius: 5px;
+  // border: solid 1px red;
+  padding: 7.5% 0% 7.5% 0%;
+  width: 30%;
+  text-align: center;
+  box-shadow: 0px 0px 10px lightgray;
+  border-radius: 5px;
 
-    input {
-        padding: 2%;
-        width: 60%;
-        margin-bottom: 6%;
-        outline: none;
-    }
+  input {
+    padding: 2%;
+    width: 60%;
+    margin-bottom: 6%;
+    outline: none;
+  }
 
-    button {
-        border: solid 1px #0096DB;
-        color: #0096DB;
-        background-color: white;
-        padding: 2% 4% 2% 4%;
-        transition: .3s;
-        cursor: pointer;
-        outline: none;
-    }
+  button {
+    border: solid 1px #0096db;
+    color: #0096db;
+    background-color: white;
+    padding: 2% 4% 2% 4%;
+    transition: 0.3s;
+    cursor: pointer;
+    outline: none;
+  }
 
-    button:hover {
-        background-color: #0096DB;
-        color: white;
-    }
+  button:hover {
+    background-color: #0096db;
+    color: white;
+  }
 `;
 
 const StyledError = styled.div`
-    color: red;
-    margin-top: 6%;
-    width: 70%;
+  color: red;
+  margin-top: 6%;
+  width: 70%;
 `;
