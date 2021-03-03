@@ -128,7 +128,7 @@ function AdminDash (props) {
 function mapStateToProps (state) {
     return {
         activeAdmin: state.activeAdmin,
-        taskList: state.admin.taskList     
+        taskList: state.admin.taskList  
     };
 };
 
