@@ -82,4 +82,6 @@ const SearchBar = ({ teamList }) => {
     </>
   );
 };
+
+
 export default SearchBar;
