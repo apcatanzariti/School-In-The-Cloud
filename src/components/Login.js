@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { setActiveAdmin } from './../actions/action';
-import signUp from './validation/signUpSchema.js'
+import { setActiveAdmin } from './../actions/index';
+import signIn from './validation/signInSchema.js'
+
 
 function AdminLogin (props) {
     const [credentials, setCredentials] = useState({
@@ -42,8 +43,8 @@ function AdminLogin (props) {
     };
 
     useEffect(() => {
-        signUp.isValid(credentials).then(valid => setDisabled(!valid))
-        signUp.validate(credentials)
+        signIn.isValid(credentials).then(valid => setDisabled(!valid))
+        signIn.validate(credentials)
             .then(()=>{
                 setError('');
             })
@@ -75,7 +76,7 @@ function AdminLogin (props) {
                 value={credentials.password}
                 onChange={handleChange}/>
                 </div>
-                
+
                 <button disabled={disabled}>Sign In</button>
                 <center><StyledError>{error}</StyledError></center>
 
@@ -118,8 +119,8 @@ const StyledLoginContainer = styled.div`
     }
 
     button:disabled{
-        border: solid 1px red;
-        color: red;
+        border: solid 1px lightgray;
+        color: lightgray;
         cursor: not-allowed;
     }
 
