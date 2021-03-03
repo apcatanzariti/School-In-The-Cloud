@@ -7,6 +7,9 @@ export const DELETE_TASK = 'DELETE_TASK';
 export const FETCH_TASK_LOADING = 'FETCH_TASK_LOADING';
 export const FETCH_TASK_SUCCESS = 'FETCH_TASK_SUCCESS';
 export const FETCH_TASK_FAIL = 'FETCH_TASK_FAIL';
+export const FETCH_VOLUNTEERS_LOADING = 'FETCH_VOLUNTEERS_LOADING';
+export const FETCH_VOLUNTEERS_SUCCESS = 'FETCH_VOLUNTEERS_LOADING';
+export const FETCH_VOLUNTEERS_FAIL = 'FETCH_VOLUNTEERS_LOADING';
 
 //actions creators
 
@@ -19,7 +22,7 @@ export const FETCH_TASK_FAIL = 'FETCH_TASK_FAIL';
 //     })
 // };
 
-/*
+/* --------------------fetching tasks for the volunteer dash------------------
 
 export const fetchTasks = () => dispatch => {
 
@@ -47,7 +50,37 @@ export const fetchTaskFail = (error) => {
     return ({ type: FETCH_TASK_FAIL, payload: error });
 };
 
-*/
+-------------------------------------------------------------------------- */
+
+/* -----------fetching volunteers for the student dash-----------------------
+
+export const fetchVolunteers = () => dispatch => {
+
+    dispatch(fetchVolunteersLoading());
+
+    axiosWithAuth()
+    .get('/api/volunteers')
+    .then((res) => {
+        dispatch(fetchVolunteersSuccess(res.data));
+    })
+    .catch((err) => {
+        dispatch(fetchVolunteersFail(err));
+    })
+};
+
+export const fetchVolunteersLoading = () => {
+    return ({ type: FETCH_VOLUNTEERS_LOADING });
+};
+
+export const fetchVolunteersSuccess = (volunteer) => {
+    return ({ type: FETCH_VOLUNTEERS_SUCCESS, payload: volunteer });
+};
+
+export const fetchVolunteersFail = (error) => {
+    return ({ type: FETCH_VOLUNTEERS_FAIL, payload: error });
+};
+
+-------------------------------------------------------------------------- */
 
 export const setActiveAdmin = (user) => {
     return({

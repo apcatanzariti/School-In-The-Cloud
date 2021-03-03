@@ -32,15 +32,14 @@ function AdminDash(props) {
       setError("Title and Description must be filled out");
     } else {
       props.addTask(task);
-
       setTask({
         title: "",
         description: "",
       });
     }
   }
-
-  function handleDelete(id) {
+    
+   function handleDelete(id) {
     // this will eventually do some actual deleting
     console.log(`the task with the id of: ${id} was deleted!`);
   }
@@ -56,89 +55,81 @@ function AdminDash(props) {
     setEditModalOpen(false);
   }
 
-  // function submitNewTask(e) {
-  //     e.preventDefault();
+    // function submitNewTask(e) {
+    //     e.preventDefault();
 
-  //     if (newTask.title === '' || newTask.description === '') {
-  //         setError('All fields must be filled out')
-  //     } else {
-  //         axios
-  //         .post('http://localhost:5000/api/tasks', newTask)
-  //         .then(res => {
-  //           props.setTaskList(res.data);
-  //         })
-  //         .catch(err => {
-  //             console.log(err);
-  //         })
-  //         setIsAdding: false;
-  //     }
-  // };
+    //     if (newTask.title === '' || newTask.description === '') {
+    //         setError('All fields must be filled out')
+    //     } else {
+    //         axios
+    //         .post('http://localhost:5000/api/tasks', newTask)
+    //         .then(res => {
+    //           props.setTaskList(res.data);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         })
+    //         setIsAdding: false;
+    //     }
+    // };
 
-  return (
-    <StyledDashContainer>
-      <StyledLeftSide>
-        <h1>Welcome {props.activeAdmin}!</h1>
-        <h3>Here is a list of your current tasks:</h3>
-        {props.taskList.length === 0 ? (
-          <div>Currently no tasks :(</div>
-        ) : (
-          props.taskList.map((item) => {
-            return props.taskList.length === 0 ? (
-              <div>Currently no tasks :(</div>
-            ) : (
-              <>
-                <Task
-                  item={item}
-                  taskList={props.taskList}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                />
-              </>
-            );
-          })
-        )}
-      </StyledLeftSide>
+    return(
+        <StyledDashContainer>
+            <StyledLeftSide>
+                <h1>Welcome {props.activeAdmin}!</h1>
+                <h3>Here is a list of your current tasks:</h3>
+                {
+                    props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
 
-      <StyledRightSide>
-        <h1>Add a new task here</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <input
-              name="title"
-              type="text"
-              value={task.title}
-              placeholder="Title"
-              onChange={handleChange}
-            />
-          </div>
+                    props.taskList.map(item => {
+                        return (
+                            props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
+                            <>
+                            <Task item={item} taskList={props.taskList} handleDelete={handleDelete} handleEdit={handleEdit} />
+                            </>
+                        );
+                    })
+                }
+            </StyledLeftSide>
 
-          <div>
-            <textarea
-              name="description"
-              value={task.description}
-              placeholder="Description..."
-              rows="5"
-              onChange={handleChange}
-            />
-          </div>
+            <StyledRightSide>
+                <h1>Add a new task here</h1>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <input
+                        name='title'
+                        type='text'
+                        value={task.title}
+                        placeholder='Title'
+                        onChange={handleChange}/>
+                    </div>
 
-          <button>Add Task</button>
-          <StyledError>{error}</StyledError>
-        </form>
-      </StyledRightSide>
-      <Modal open={editModalOpen} setOpen={setEditModalOpen}>
-        <EditTask task={taskBeingEdited} saveTask={saveTask} />
-      </Modal>
-    </StyledDashContainer>
-  );
-}
+                    <div>
+                        <textarea
+                        name='description'
+                        value={task.description}
+                        placeholder='Description...'
+                        rows='5'
+                        onChange={handleChange}/>
+                    </div>
 
-function mapStateToProps(state) {
-  return {
-    activeAdmin: state.activeAdmin,
-    taskList: state.admin.taskList,
-  };
-}
+                    <button>Add Task</button>
+                    <StyledError>{error}</StyledError>
+                </form>
+            </StyledRightSide>
+            <Modal open={editModalOpen} setOpen={setEditModalOpen}>
+                <EditTask task={taskBeingEdited} saveTask={saveTask} />
+            </Modal>
+        </StyledDashContainer>
+    );
+};
+
+function mapStateToProps (state) {
+    return {
+        activeAdmin: state.activeAdmin,
+        taskList: state.admin.taskList  
+    };
+};
 
 export default connect(mapStateToProps, { addTask })(AdminDash);
 
