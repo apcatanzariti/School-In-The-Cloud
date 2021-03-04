@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { addTask } from "./../actions/index";
 import Task from "./Task";
 import Modal from "./Modal";
 import EditTask from "./EditTask";
+import taskSchema from "./validation/addTaskSchema.js"
 
 function AdminDash(props) {
   const [task, setTask] = useState({
@@ -14,6 +15,7 @@ function AdminDash(props) {
   });
 
   const [error, setError] = useState("");
+  const [disabled, setDisabled] = useState(true)
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [taskBeingEdited, setTaskBeingEdited] = useState(null);
@@ -27,16 +29,11 @@ function AdminDash(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    if (task.title === "" || task.description === "") {
-      setError("Title and Description must be filled out");
-    } else {
-      props.addTask(task);
-      setTask({
-        title: "",
-        description: "",
-      });
-    }
+    props.addTask(task);
+    setTask({
+    title: "",
+    description: "",
+    });
   }
     
    function handleDelete(id) {
@@ -72,6 +69,17 @@ function AdminDash(props) {
     //         setIsAdding: false;
     //     }
     // };
+
+    useEffect(() => {
+        taskSchema.isValid(task).then(valid => setDisabled(!valid))
+        taskSchema.validate(task)
+            .then(()=>{
+                setError('');
+            })
+            .catch((err)=>{
+                setError(err.errors[0])
+            })
+    }, [task])
 
     return(
         <StyledDashContainer>
@@ -113,7 +121,7 @@ function AdminDash(props) {
                         onChange={handleChange}/>
                     </div>
 
-                    <button>Add Task</button>
+                    <button disabled={disabled}>Add Task</button>
                     <StyledError>{error}</StyledError>
                 </form>
             </StyledRightSide>
@@ -144,7 +152,6 @@ const StyledLeftSide = styled.div`
   padding: 3%;
   width: 47%;
   box-shadow: 0px 5px 8px lightgray;
-
   button {
     border: solid 1px #0096db;
     color: #0096db;
@@ -154,7 +161,6 @@ const StyledLeftSide = styled.div`
     cursor: pointer;
     outline: none;
   }
-
   button:hover {
     background-color: #0096db;
     color: white;
@@ -165,7 +171,6 @@ const StyledRightSide = styled.div`
   // border: solid 1px green;
   padding: 3%;
   width: 47%;
-
   input {
     margin-bottom: 5%;
     padding: 1.5%;
@@ -173,7 +178,6 @@ const StyledRightSide = styled.div`
     font-size: 1em;
     width: 80%;
   }
-
   textarea {
     margin-bottom: 5%;
     padding: 1.5%;
@@ -181,21 +185,26 @@ const StyledRightSide = styled.div`
     font-size: 1em;
     width: 80%;
   }
-
   button {
-    border: solid 1px #0096db;
-    color: #0096db;
+    border: solid 1px #0096DB;
+    color: #0096DB;
     background-color: white;
     padding: 2% 4% 2% 4%;
-    transition: 0.3s;
-    cursor: pointer;
+    transition: .3s;
     outline: none;
-  }
+}
 
-  button:hover {
-    background-color: #0096db;
+button:disabled{
+    border: solid 1px lightgray;
+    color: lightgray;
+    cursor: not-allowed;
+}
+
+button:hover:enabled {
+    background-color: #0096DB;
+    cursor: pointer;
     color: white;
-  }
+}
 `;
 
 const StyledError = styled.div`

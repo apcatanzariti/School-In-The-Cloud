@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
 import { setActiveAdmin } from "./../actions/index";
+import signIn from './validation/signInSchema.js'
 
 function AdminLogin(props) {
   const [credentials, setCredentials] = useState({
@@ -13,6 +14,7 @@ function AdminLogin(props) {
   });
 
   const [error, setError] = useState("");
+  const [disabled, setDisabled] = useState(true)
 
   const history = useHistory();
 
@@ -47,6 +49,17 @@ function AdminLogin(props) {
       })
     }
   };
+    
+  useEffect(() => {
+    signIn.isValid(credentials).then(valid => setDisabled(!valid))
+    signIn.validate(credentials)
+        .then(()=>{
+            setError('');
+        })
+        .catch((err)=>{
+            setError(err.errors[0])
+        })
+}, [credentials])
 
   return (
     <StyledLoginContainer>
@@ -84,7 +97,7 @@ function AdminLogin(props) {
           />
         </div>
 
-        <button>Sign In</button>
+        <button disabled={disabled}>Sign In</button>
         <center>
           <StyledError>{error}</StyledError>
         </center>
@@ -109,28 +122,32 @@ const StyledLoginContainer = styled.div`
   text-align: center;
   box-shadow: 0px 0px 10px lightgray;
   border-radius: 5px;
-
   input {
     padding: 2%;
     width: 60%;
     margin-bottom: 6%;
     outline: none;
   }
-
   button {
-    border: solid 1px #0096db;
-    color: #0096db;
+    border: solid 1px #0096DB;
+    color: #0096DB;
     background-color: white;
     padding: 2% 4% 2% 4%;
-    transition: 0.3s;
-    cursor: pointer;
+    transition: .3s;
     outline: none;
-  }
+}
 
-  button:hover {
-    background-color: #0096db;
+button:disabled{
+    border: solid 1px lightgray;
+    color: lightgray;
+    cursor: not-allowed;
+}
+
+button:hover:enabled {
+    background-color: #0096DB;
+    cursor: pointer;
     color: white;
-  }
+}
 `;
 
 const StyledError = styled.div`

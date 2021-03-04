@@ -1,13 +1,16 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import taskSchema from "./validation/addTaskSchema.js";
 
 function EditTask(props) {
 
     const { task: originalTask, saveTask } = props;
 
     const [ task, setTask ] = useState({ ...originalTask });
+
     const [error, setError] = useState('');
+    const [disabled, setDisabled] = useState(true)
 
     function handleChange(e) {
         setTask({
@@ -20,6 +23,17 @@ function EditTask(props) {
         e.preventDefault();
         saveTask(task);
     }
+
+    useEffect(() => {
+        taskSchema.isValid(task).then(valid => setDisabled(!valid))
+        taskSchema.validate(task)
+            .then(()=>{
+                setError('');
+            })
+            .catch((err)=>{
+                setError(err.errors[0])
+            })
+    }, [task])
 
     return (
         <EditTaskDiv>
@@ -46,8 +60,8 @@ function EditTask(props) {
                     onChange={handleChange}/>
                 </div>
 
-                <button>Save Changes</button>
-                <StyledError>{error}</StyledError>
+                <button disabled={disabled}>Save Changes</button>
+                <center><StyledError>{error}</StyledError></center>
             </form>
             
         </EditTaskDiv>
@@ -85,12 +99,18 @@ const EditTaskDiv = styled.div`
         background-color: white;
         padding: 2% 4% 2% 4%;
         transition: .3s;
-        cursor: pointer;
         outline: none;
     }
-
-    button:hover {
+    
+    button:disabled{
+        border: solid 1px lightgray;
+        color: lightgray;
+        cursor: not-allowed;
+    }
+    
+    button:hover:enabled {
         background-color: #0096DB;
+        cursor: pointer;
         color: white;
     }
 `;

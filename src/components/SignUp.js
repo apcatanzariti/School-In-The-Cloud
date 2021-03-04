@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import signUp from './validation/signUpSchema.js'
 
 function SignUp () {
     const [credentials, setCredentials] = useState({
         username: '',
         password: '',
+        passwordconf: '',
         role: ''
     });
     const [error, setError] = useState('');
     const [activeForm, setActiveForm] = useState('');
+    const [disabled, setDisabled] = useState(true)
 
     const history = useHistory();
 
@@ -56,6 +59,17 @@ function SignUp () {
         }
     };
 
+    useEffect(() => {
+        signUp.isValid(credentials).then(valid => setDisabled(!valid))
+        signUp.validate(credentials)
+            .then(()=>{
+                setError('');
+            })
+            .catch((err)=>{
+                setError(err.errors[0])
+            })
+    }, [credentials])
+
     return(
         <StyledSignUpContainer>
             <h3>New Here? Sign up as:</h3>
@@ -93,7 +107,16 @@ function SignUp () {
                 onChange={handleChange}/>
                 </div>
 
-                <button>{`${activeForm} Register`}</button>
+                <div>
+                <input 
+                name='passwordconf'
+                type='password'
+                placeholder={`${activeForm} Password Confirmation`}
+                value={credentials.passwordconf}
+                onChange={handleChange}/>
+                </div>
+
+                <button disabled={disabled}>{`${activeForm} Register`}</button>
                 <button className='cancel' onClick={e => {e.stopPropagation(); setActiveForm(''); setError('');}}>Cancel</button>
 
                 {
@@ -168,10 +191,18 @@ const StyledSignUpContainer = styled.div`
         }
     }
 
-    button:hover {
+    button:disabled{
+        border: solid 1px lightgray;
+        color: lightgray;
+        cursor: not-allowed;
+    }
+
+    button:hover:enabled {
+        cursor: pointer;
         background-color: #0096DB;
         color: white;
     }
+    
 `;
 
 const StyledError = styled.div`
