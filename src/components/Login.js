@@ -7,12 +7,6 @@ import { setActiveAdmin } from "./../actions/index";
 import signIn from './validation/signInSchema.js'
 
 function Login (props) {
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-    role: ROLE.STUDENT
-  });
-
   const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(true)
 
@@ -28,6 +22,12 @@ const roleOptions = [
   { name: 'Volunteer', value: ROLE.VOLUNTEER},
   { name: 'Admin', value: ROLE.ADMIN },
 ];
+
+const [credentials, setCredentials] = useState({
+  username: "",
+  password: "",
+  role: ROLE.STUDENT
+});
 
 const history = useHistory();
 
