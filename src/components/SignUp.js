@@ -43,14 +43,12 @@ function SignUp () {
             axios
             .post('https://bw-backend-clouds.herokuapp.com/api/auth/register', credentials)
             .then(res => {
-                localStorage.setItem('token', JSON.stringify(res.data.password));
-                // console.log(res);
+                console.log(res);
                 setCredentials({
                     username: '',
                     password: '',
                     role: ''
                 });
-                history.push(`${credentials.role}-dash`);
             })
             .catch(err => {
                 setError(err.response.data.error);

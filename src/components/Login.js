@@ -9,6 +9,7 @@ function AdminLogin(props) {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
+    role: ''
   });
 
   const [error, setError] = useState("");
@@ -36,8 +37,9 @@ function AdminLogin(props) {
       axios
       .post('https://bw-backend-clouds.herokuapp.com/api/auth/login', credentials)
       .then(res => {
-          //localStorage.setItem('token', JSON.stringify(res.data.password));
-          //history.push('/admin-dash');
+          localStorage.setItem('token', JSON.stringify(res.data.token));
+          localStorage.setItem('role', JSON.stringify(JSON.parse(res.config.data).role));
+          //history.push('/credentials.role/-dash');
           console.log(res);
       })
       .catch(err => {
@@ -51,6 +53,17 @@ function AdminLogin(props) {
       <h3>Sign In Here:</h3>
 
       <form onSubmit={handleSubmit}>
+
+      <div>
+          <input
+            name="role"
+            type="text"
+            placeholder="Role"
+            value={credentials.role}
+            onChange={handleChange}
+          />
+        </div>
+
         <div>
           <input
             name="username"
