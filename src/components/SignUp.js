@@ -1,39 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import signUp from './validation/signUpSchema.js'
-
-
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import signUp from "./validation/signUpSchema.js";
 
 const initialCredentials = {
-    username: '',
-    password: '',
-    passwordconf: '',
-    role: '',
-}
+  username: "",
+  password: "",
+  passwordconf: "",
+  role: "",
+};
 
-function SignUp () {
+function SignUp() {
+  const [credentials, setCredentials] = useState(initialCredentials);
+  const [error, setError] = useState("");
+  const [activeForm, setActiveForm] = useState("");
+  const [disabled, setDisabled] = useState(true);
 
-    const [credentials, setCredentials] = useState(initialCredentials);
-    const [error, setError] = useState('');
-    const [activeForm, setActiveForm] = useState('');
-    const [disabled, setDisabled] = useState(true)
+  const history = useHistory();
 
-    const history = useHistory();
+  function changeActive(role) {
+    setActiveForm(role);
+    setCredentials({
+      ...credentials,
+      role: role,
+    });
+  }
 
-    function changeActive (role) {
-        setActiveForm(role);
-        setCredentials({
-            ...credentials,
-            role: role
-        });
-    };
+  function handleChange(e) {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
+    });
+  }
 
-    function handleChange (e) {
-        setCredentials({
-            ...credentials,
-            [e.target.name]: e.target.value
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    // the 'else' portion of this will be replaced by the axios call
+    if (credentials.username === "" || credentials.password === "") {
+      setError("Username and Password must be filled out");
+    } else {
+      setError("");
+      // history.push('/student-dash');
+      console.log(credentials);
+
+      // Doing this because including passwordconf breaks axios.
+      const axiosCredentials = {
+        username: credentials.username,
+        password: credentials.password,
+        role: credentials.role,
+      };
+
+      axios
+        .post(
+          "https://bw-backend-clouds.herokuapp.com/api/auth/register",
+          axiosCredentials
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          setError(err.response.data.error);
         });
     };
 
@@ -227,11 +255,11 @@ const StyledSignUpContainer = styled.div`
         background-color: #0096DB;
         color: white;
     }
-    
+  }
 `;
 
 const StyledError = styled.div`
-    color: red;
-    width: 70%;
-    margin-top: 3%;
+  color: red;
+  width: 70%;
+  margin-top: 3%;
 `;

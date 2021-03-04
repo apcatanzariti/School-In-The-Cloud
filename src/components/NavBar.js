@@ -2,18 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 
-function NavBar ({ activeLink, setActiveLink }) {
-  
-    const history = useHistory();
+function NavBar({ activeLink, setActiveLink }) {
+  const history = useHistory();
 
-    const logOut = () => {
-        // console.log('You logged out 👍');
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        setActiveLink(!activeLink);
-        history.push('/');
-    };
-  
+  const logOut = () => {
+    // console.log('You logged out 👍');
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    setActiveLink(!activeLink);
+    history.push("/");
+  };
+
   return (
     <StyledNavContainer>
       <Link to="/">
@@ -28,14 +27,24 @@ function NavBar ({ activeLink, setActiveLink }) {
           <StyledLink>Home</StyledLink>
         </Link>
 
-        <Link to={
-          JSON.parse(localStorage.getItem('role')) === null ? '/' :
-          `/${JSON.parse(localStorage.getItem('role'))}-dash`
-          }>
+        <Link
+          to={
+            JSON.parse(localStorage.getItem("role")) === null
+              ? "/"
+              : `/${JSON.parse(localStorage.getItem("role"))}-dash`
+          }
+        >
           <StyledLink>Dashboard</StyledLink>
         </Link>
 
-          <StyledLogOut onClick={e => {e.stopPropagation(); logOut();}}>Logout</StyledLogOut>
+        <StyledLogOut
+          onClick={(e) => {
+            e.stopPropagation();
+            logOut();
+          }}
+        >
+          Logout
+        </StyledLogOut>
       </StyledLinksDiv>
     </StyledNavContainer>
   );
@@ -83,13 +92,13 @@ const StyledLink = styled.div`
 `;
 
 const StyledLogOut = styled.div`
-    color: #0096DB;
-    padding: 7px 12px 7px 12px;
-    cursor: pointer;
-    transition: .3s;
+  color: #0096db;
+  padding: 7px 12px 7px 12px;
+  cursor: pointer;
+  transition: 0.3s;
 
-    :hover {
-        color: white;
-        background-color: #0096DB;
-    }
+  :hover {
+    color: white;
+    background-color: #0096db;
+  }
 `;
