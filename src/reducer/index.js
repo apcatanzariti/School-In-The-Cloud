@@ -8,7 +8,7 @@ export const initialState = {
   role: '',
   isFetching: false,
   fetchError: '',
-  volunteers: [{firstName:'Brad', lastName:'Marchand', country:'Boston', timeSlots: 'never'}]
+  volunteers: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,9 +29,7 @@ const reducer = (state = initialState, action) => {
     case ADD_TASK:
       return({
         ...state,
-        admin: {
-          taskList: [...state.admin.taskList, action.payload]
-          }
+        tasks: [ ...state.tasks, action.payload ]
       });
 
     case DELETE_TASK:

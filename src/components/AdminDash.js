@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { addTask } from "./../actions/index";
-import Task from "./Task";
+import TaskList from "./TaskList";
 import Modal from "./Modal";
 import EditTask from "./EditTask";
 import taskSchema from "./validation/addTaskSchema.js"
 
+import { addTask, fetchTasks } from "./../actions/index";
+
+
+
 function AdminDash(props) {
+
+  const { tasks, fetchTasks } = props;
+
   const [task, setTask] = useState({
     id: Date.now(),
     title: "",
@@ -15,10 +21,15 @@ function AdminDash(props) {
   });
 
   const [error, setError] = useState("");
-  const [disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(true);
 
+  // For EditTask
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [taskBeingEdited, setTaskBeingEdited] = useState(null);
+
+  useEffect(() => {
+    fetchTasks && fetchTasks();
+  }, [ fetchTasks ]);
 
   function handleChange(e) {
     setTask({
@@ -47,21 +58,34 @@ function AdminDash(props) {
     });
   }
     
-   function handleDelete(id) {
+  function handleDelete(id) {
     // this will eventually do some actual deleting
     console.log(`the task with the id of: ${id} was deleted!`);
   }
 
+  // Sets the task being edited and opens the modal to edit it.
   function handleEdit(task) {
     setTaskBeingEdited(task);
     setEditModalOpen(true);
   }
 
+  // Saves changes to the task being edited. (Doesn't actually do anything yet)
   function saveTask(savedTask) {
     const id = savedTask.id;
     console.log(`saving changes to task with id: ${id}`, savedTask);
     setEditModalOpen(false);
   }
+
+  useEffect(() => {
+      taskSchema.isValid(task).then(valid => setDisabled(!valid))
+      taskSchema.validate(task)
+          .then(()=>{
+              setError('');
+          })
+          .catch((err)=>{
+              setError(err.errors[0])
+          })
+  }, [task])
 
     // function submitNewTask(e) {
     //     e.preventDefault();
@@ -134,12 +158,16 @@ function AdminDash(props) {
 
 function mapStateToProps (state) {
     return {
-        activeAdmin: state.activeAdmin,
-        taskList: state.admin.taskList  
+        tasks: state.tasks  
     };
 };
 
-export default connect(mapStateToProps, { addTask })(AdminDash);
+export default connect(mapStateToProps, { 
+  addTask,
+  fetchTasks
+})(AdminDash);
+
+
 
 const StyledDashContainer = styled.div`
   // border: solid 1px red;

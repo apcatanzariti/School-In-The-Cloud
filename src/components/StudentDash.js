@@ -6,13 +6,15 @@ import FuzzySearch from 'fuzzy-search';
 
 import VolunteerList from './VolunteerList';
 
-const dummyVolunteers = [
-    { firstName: 'April', lastName: 'Wells', country: 'United States', timeSlots: '9:00am, 10:00am, 11:00am', id: '1123' },
-    { firstName: 'Stanley', lastName: 'Callison', country: 'United States', timeSlots: '5:00pm, 6:00pm, 7:00pm', id: '6573' },
-    { firstName: 'Kassandra', lastName: 'Simmons', country: 'Canada', timeSlots: '9:00pm, 10:00pm', id: '8643' },
-    { firstName: 'Wallace', lastName: 'Colyer', country: 'United Kingdom', timeSlots: '12:00am, 1:00pm, 2:00pm, 3:00pm', id: '3568' },
-    { firstName: 'Glenn', lastName: 'Wylie', country: 'India', timeSlots: '10:00am, 11:00am', id: '9102' },
-];
+import { getVolunteers } from '../utils/volunteerApi';
+
+// const dummyVolunteers = [
+//     { firstName: 'April', lastName: 'Wells', country: 'United States', timeSlots: '9:00am, 10:00am, 11:00am', id: '1123' },
+//     { firstName: 'Stanley', lastName: 'Callison', country: 'United States', timeSlots: '5:00pm, 6:00pm, 7:00pm', id: '6573' },
+//     { firstName: 'Kassandra', lastName: 'Simmons', country: 'Canada', timeSlots: '9:00pm, 10:00pm', id: '8643' },
+//     { firstName: 'Wallace', lastName: 'Colyer', country: 'United Kingdom', timeSlots: '12:00am, 1:00pm, 2:00pm, 3:00pm', id: '3568' },
+//     { firstName: 'Glenn', lastName: 'Wylie', country: 'India', timeSlots: '10:00am, 11:00am', id: '9102' },
+// ];
 
 function StudentDash ({ volunteers, fetchVolunteers }) {
     // const [ volunteers, setVolunteers ] = useState([]);
@@ -21,17 +23,17 @@ function StudentDash ({ volunteers, fetchVolunteers }) {
     const [ fuzzySearcher, setFuzzySearcher ] = useState(null);
 
     useEffect(() => {
-       fetchVolunteers(); 
-    },[]);
+       fetchVolunteers && fetchVolunteers(); 
+    }, [ fetchVolunteers ]);
 
     useEffect(() => {
         setFuzzySearcher(
-            new FuzzySearch( volunteers, ['firstName', 'lastName', 'country', 'timeSlots'] )
+            new FuzzySearch( volunteers, ['username'] )
         );
     }, [ volunteers ]);
 
     useEffect(() => {
-        fuzzySearcher && setFilteredVolunteers( fuzzySearcher.search(searchTerm));
+        fuzzySearcher && setFilteredVolunteers( fuzzySearcher.search(searchTerm) );
     }, [ fuzzySearcher, searchTerm ]);
 
 
@@ -62,6 +64,7 @@ export default connect(mapStateToProps, {fetchVolunteers})(StudentDash);
 
 
 const StyledStudentDashDiv = styled.div`
+
     h1 {
         color: #5d5d5d
     }
