@@ -8,7 +8,6 @@ import VolunteerDash from './components/VolunteerDash';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Footer from './components/Footer';
-// for searchbar
 
 function App() {
   return (
