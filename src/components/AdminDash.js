@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { addTask } from "./../actions/index";
@@ -25,6 +25,17 @@ function AdminDash(props) {
       ...task,
       [e.target.name]: e.target.value,
     });
+    setTask((state)=>{
+      taskSchema.isValid(state).then(valid => setDisabled(!valid))
+      taskSchema.validate(state)
+      .then(()=>{
+          setError('');
+      })
+      .catch((err)=>{
+          setError(err.errors[0])
+      })
+      return state
+  })
   }
 
   function handleSubmit(e) {
@@ -69,17 +80,6 @@ function AdminDash(props) {
     //         setIsAdding: false;
     //     }
     // };
-
-    useEffect(() => {
-        taskSchema.isValid(task).then(valid => setDisabled(!valid))
-        taskSchema.validate(task)
-            .then(()=>{
-                setError('');
-            })
-            .catch((err)=>{
-                setError(err.errors[0])
-            })
-    }, [task])
 
     return(
         <StyledDashContainer>

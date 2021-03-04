@@ -10,30 +10,30 @@ function EditTask(props) {
     const [ task, setTask ] = useState({ ...originalTask });
 
     const [error, setError] = useState('');
-    const [disabled, setDisabled] = useState(true)
+    const [disabled, setDisabled] = useState(false)
 
     function handleChange(e) {
         setTask({
             ...task,
             [e.target.name]: e.target.value
         });
-    };
-    
-    function handleSubmit(e) {
-        e.preventDefault();
-        saveTask(task);
-    }
-
-    useEffect(() => {
-        taskSchema.isValid(task).then(valid => setDisabled(!valid))
-        taskSchema.validate(task)
+        setTask((state)=>{
+            taskSchema.isValid(state).then(valid => setDisabled(!valid))
+            taskSchema.validate(state)
             .then(()=>{
                 setError('');
             })
             .catch((err)=>{
                 setError(err.errors[0])
             })
-    }, [task])
+            return state
+        })
+    };
+    
+    function handleSubmit(e) {
+        e.preventDefault();
+        saveTask(task);
+    }
 
     return (
         <EditTaskDiv>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -35,6 +35,17 @@ function Login(props) {
       ...credentials,
       [e.target.name]: e.target.value,
     });
+    setCredentials((state)=>{
+      signIn.isValid(state).then(valid => setDisabled(!valid))
+      signIn.validate(state)
+      .then(()=>{
+          setError('');
+      })
+      .catch((err)=>{
+          setError(err.errors[0])
+      })
+      return state
+    })
   }
 
   function handleSubmit(e) {
@@ -65,7 +76,7 @@ function Login(props) {
           setError(err.response.data.error);
         });
     }
-  }
+  };
 
   useEffect(() => {
     signIn.isValid(credentials).then((valid) => setDisabled(!valid));
