@@ -186,8 +186,8 @@ const StyledRightSide = styled.div`
     }
 
     button:disabled{
-        border: solid 1px red;
-        color: red;
+        border: solid 1px lightgray;
+        color: lightgray;
         cursor: not-allowed;
     }
 
