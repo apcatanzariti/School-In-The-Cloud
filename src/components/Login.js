@@ -6,17 +6,30 @@ import { connect } from "react-redux";
 import { setActiveAdmin } from "./../actions/index";
 import signIn from './validation/signInSchema.js'
 
-function AdminLogin(props) {
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-    role: ''
-  });
-
+function Login (props) {
   const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(true)
 
-  const history = useHistory();
+// Declare role enum
+const ROLE = {
+  STUDENT: 'student',
+  VOLUNTEER: 'volunteer',
+  ADMIN: 'admin'
+}
+
+const roleOptions = [
+  { name: 'Student', value: ROLE.STUDENT },
+  { name: 'Volunteer', value: ROLE.VOLUNTEER},
+  { name: 'Admin', value: ROLE.ADMIN },
+];
+
+const [credentials, setCredentials] = useState({
+  username: "",
+  password: "",
+  role: ROLE.STUDENT
+});
+
+const history = useHistory();
 
   function handleChange(e) {
     setCredentials({
@@ -39,12 +52,10 @@ function AdminLogin(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    // the 'else' portion of this will be replaced by the axios call
     if (credentials.username === "" || credentials.password === "") {
       setError("Username and Password must be filled out");
     } else {
       setError("");
-      // props.setActiveAdmin(credentials);
       // history.push("/admin-dash");
       
       axios
@@ -52,6 +63,7 @@ function AdminLogin(props) {
       .then(res => {
           localStorage.setItem('token', JSON.stringify(res.data.token));
           localStorage.setItem('role', JSON.stringify(JSON.parse(res.config.data).role));
+          props.setActiveLink(!props.activeLink);
           //history.push('/credentials.role/-dash');
           console.log(res);
       })
@@ -67,18 +79,11 @@ function AdminLogin(props) {
 
       <form onSubmit={handleSubmit}>
 
-      <div>
-          <input
-            name="role"
-            type="text"
-            placeholder="Role"
-            value={credentials.role}
-            onChange={handleChange}
-          />
-        </div>
-
+        {/* Input Name */}
         <div>
+          <label htmlFor="username" />
           <input
+            id="name"
             name="username"
             type="text"
             placeholder="Username"
@@ -87,8 +92,11 @@ function AdminLogin(props) {
           />
         </div>
 
+        {/* Input Password */}
         <div>
+          <label htmlFor="password" />
           <input
+            id="password"
             name="password"
             type="password"
             placeholder="Password"
@@ -97,7 +105,24 @@ function AdminLogin(props) {
           />
         </div>
 
+        {/* Select Role */}
+        <div>
+          <select
+            name="role"
+            value={credentials.role || ROLE.STUDENT}
+            onChange={handleChange}
+          >
+            {roleOptions.map(role => (
+              <option value={role.value}>
+                {role.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Submit Button */}
         <button disabled={disabled}>Sign In</button>
+
         <center>
           <StyledError>{error}</StyledError>
         </center>
@@ -112,7 +137,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { setActiveAdmin })(AdminLogin);
+export default connect(mapStateToProps)(Login);
 //export default AdminLogin;
 
 const StyledLoginContainer = styled.div`
@@ -122,12 +147,15 @@ const StyledLoginContainer = styled.div`
   text-align: center;
   box-shadow: 0px 0px 10px lightgray;
   border-radius: 5px;
-  input {
+
+  input, select {
+    box-sizing: border-box;
     padding: 2%;
-    width: 60%;
+    width: 65%;
     margin-bottom: 6%;
     outline: none;
   }
+
   button {
     border: solid 1px #0096DB;
     color: #0096DB;
