@@ -10,6 +10,7 @@ function AdminLogin(props) {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
+    role: ''
   });
 
   const [error, setError] = useState("");
@@ -26,20 +27,29 @@ function AdminLogin(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setError("");
-    props.setActiveAdmin(credentials);
-    history.push("/admin-dash");
 
-    // axios
-    // .post('http://localhost:5000/api/login', credentials)
-    // .then(res => {
-    //     localStorage.setItem('token', JSON.stringify(res.data.payload));
-    //     history.push('/admin-dash');
-    // })
-    // .catch(err => {
-    //     setError(err.response.data.error);
-    // })
-  }
+    // the 'else' portion of this will be replaced by the axios call
+    if (credentials.username === "" || credentials.password === "") {
+      setError("Username and Password must be filled out");
+    } else {
+      setError("");
+      // props.setActiveAdmin(credentials);
+      // history.push("/admin-dash");
+      
+      axios
+      .post('https://bw-backend-clouds.herokuapp.com/api/auth/login', credentials)
+      .then(res => {
+          localStorage.setItem('token', JSON.stringify(res.data.token));
+          localStorage.setItem('role', JSON.stringify(JSON.parse(res.config.data).role));
+          //history.push('/credentials.role/-dash');
+          console.log(res);
+      })
+      .catch(err => {
+          setError(err.response.data.error);
+      })
+    }
+  };
+    
   useEffect(() => {
     signIn.isValid(credentials).then(valid => setDisabled(!valid))
     signIn.validate(credentials)
@@ -56,6 +66,17 @@ function AdminLogin(props) {
       <h3>Sign In Here:</h3>
 
       <form onSubmit={handleSubmit}>
+
+      <div>
+          <input
+            name="role"
+            type="text"
+            placeholder="Role"
+            value={credentials.role}
+            onChange={handleChange}
+          />
+        </div>
+
         <div>
           <input
             name="username"

@@ -5,7 +5,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={() => {
-        if (localStorage.getItem.parse("token")) {
+        if (localStorage.getItem("token")) {
           return <Component />;
         } else {
           return <Redirect to="/" />;

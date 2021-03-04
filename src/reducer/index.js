@@ -5,6 +5,7 @@ export const initialState = {
   isLoading: false,
   error: "",
   tasks: [],
+  role: '',
   isFetching: false,
   fetchError: '',
   volunteers: [],

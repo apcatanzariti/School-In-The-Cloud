@@ -1,4 +1,3 @@
-
 import { Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from './components/NavBar';
@@ -8,39 +7,7 @@ import VolunteerDash from './components/VolunteerDash';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Footer from './components/Footer';
-
-const data = [
-  {
-    id: 0,
-    name: "patrick",
-    age: 24,
-    location: "Bradenton, FL",
-  },
-  {
-    id: 1,
-    name: "Karen",
-    age: 24,
-    location: "Hudson, NY",
-  },
-  {
-    id: 2,
-    name: "Jessica",
-    age: 42,
-    location: "Boise, ID",
-  },
-  {
-    id: 3,
-    name: "Frank",
-    age: 35,
-    location: "St.Louis, MO",
-  },
-  {
-    id: 4,
-    name: "Xavier",
-    age: 55,
-    location: "Los Vegas",
-  },
-];
+import PrivateRoute from './utils/PrivateRoute';
 
 function App() {
 
@@ -48,17 +15,24 @@ function App() {
     <StyledAppContainer>
       <NavBar />
       <Switch>
-        <Route path="/admin-dash">
+        
+        {/* <Route path="/admin-dash">
           <AdminDash />
-        </Route>
+        </Route> */}
+ 
+        <PrivateRoute path='/admin-dash' component={AdminDash} />
 
-        <Route path="/student-dash">
+        {/* <Route path="/student-dash">
           <StudentDash />
-        </Route>
+        </Route> */}
 
-        <Route path="/volunteer-dash">
+        <PrivateRoute path='/student-dash' component={StudentDash} />
+
+        {/* <Route path="/volunteer-dash">
           <VolunteerDash />
-        </Route>
+        </Route> */}
+
+        <PrivateRoute path='/volunteer-dash' component={VolunteerDash} />
 
         <Route path="/">
           <StyledIntroDiv>

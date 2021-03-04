@@ -35,15 +35,28 @@ function SignUp () {
     function handleSubmit (e) {
         e.preventDefault();
 
-        // axios
-        // .post('http://localhost:5000/api/login', credentials)
-        // .then(res => {
-        //     localStorage.setItem('token', JSON.stringify(res.data.payload));
-        //     history.push('/student-dash');
-        // })
-        // .catch(err => {
-        //     setError(err.response.data.error);
-        // })
+        // the 'else' portion of this will be replaced by the axios call
+        if (credentials.username === '' || credentials.password === '') {
+            setError('Username and Password must be filled out');
+        } else {
+            setError('');
+            // history.push('/student-dash');
+            console.log(credentials);
+            
+            axios
+            .post('https://bw-backend-clouds.herokuapp.com/api/auth/register', credentials)
+            .then(res => {
+                console.log(res);
+                setCredentials({
+                    username: '',
+                    password: '',
+                    role: ''
+                });
+            })
+            .catch(err => {
+                setError(err.response.data.error);
+            })
+        }
     };
 
     useEffect(() => {
@@ -64,11 +77,11 @@ function SignUp () {
             {
                 activeForm === '' ? 
                 <>
-                <div><button onClick={e => {e.stopPropagation(); changeActive('Admin');}}>An Administrator</button></div>
+                <div><button onClick={e => {e.stopPropagation(); changeActive('admin');}}>An Administrator</button></div>
 
-                <div><button onClick={e => {e.stopPropagation(); changeActive('Student');}}>A Student</button></div>
+                <div><button onClick={e => {e.stopPropagation(); changeActive('student');}}>A Student</button></div>
     
-                <div><button onClick={e => {e.stopPropagation(); changeActive('Volunteer');}}>A Volunteer</button></div> </> : null
+                <div><button onClick={e => {e.stopPropagation(); changeActive('volunteer');}}>A Volunteer</button></div> </> : null
             }
 
             {
