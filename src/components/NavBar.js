@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 
 function NavBar () {
-
+  
     const history = useHistory();
 
     const logOut = () => {
@@ -26,7 +26,7 @@ function NavBar () {
           <StyledLink>Home</StyledLink>
         </Link>
 
-        <Link to="/admin-dash">
+        {/* <Link to="/admin-dash">
           <StyledLink>Admin Dashboard</StyledLink>
         </Link>
 
@@ -36,6 +36,10 @@ function NavBar () {
 
         <Link to="/volunteer-dash">
           <StyledLink>Volunteer Dashboard</StyledLink>
+        </Link> */}
+
+        <Link to={`/${JSON.parse(localStorage.getItem('role'))}-dash`}>
+          <StyledLink>Dashboard</StyledLink>
         </Link>
 
           <StyledLogOut onClick={e => {e.stopPropagation(); logOut();}}>Logout</StyledLogOut>

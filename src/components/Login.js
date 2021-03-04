@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { setActiveAdmin } from "./../actions/index";
 import signIn from './validation/signInSchema.js'
 
-function AdminLogin(props) {
+function Login (props) {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
@@ -28,12 +28,10 @@ function AdminLogin(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    // the 'else' portion of this will be replaced by the axios call
     if (credentials.username === "" || credentials.password === "") {
       setError("Username and Password must be filled out");
     } else {
       setError("");
-      // props.setActiveAdmin(credentials);
       // history.push("/admin-dash");
       
       axios
@@ -41,6 +39,7 @@ function AdminLogin(props) {
       .then(res => {
           localStorage.setItem('token', JSON.stringify(res.data.token));
           localStorage.setItem('role', JSON.stringify(JSON.parse(res.config.data).role));
+          props.setActiveLink(!props.activeLink);
           //history.push('/credentials.role/-dash');
           console.log(res);
       })
@@ -112,7 +111,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { setActiveAdmin })(AdminLogin);
+export default connect(mapStateToProps)(Login);
 //export default AdminLogin;
 
 const StyledLoginContainer = styled.div`

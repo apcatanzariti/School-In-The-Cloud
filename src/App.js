@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from './components/NavBar';
@@ -10,27 +11,16 @@ import Footer from './components/Footer';
 import PrivateRoute from './utils/PrivateRoute';
 
 function App() {
+  const [activeLink, setActiveLink] = useState(false);
 
   return (
     <StyledAppContainer>
       <NavBar />
       <Switch>
-        
-        {/* <Route path="/admin-dash">
-          <AdminDash />
-        </Route> */}
  
         <PrivateRoute path='/admin-dash' component={AdminDash} />
 
-        {/* <Route path="/student-dash">
-          <StudentDash />
-        </Route> */}
-
         <PrivateRoute path='/student-dash' component={StudentDash} />
-
-        {/* <Route path="/volunteer-dash">
-          <VolunteerDash />
-        </Route> */}
 
         <PrivateRoute path='/volunteer-dash' component={VolunteerDash} />
 
@@ -56,7 +46,7 @@ function App() {
 
           <StyledLoginContainer>
 
-          <Login />
+          <Login activeLink={activeLink} setActiveLink={setActiveLink} />
           <SignUp />
 
           </StyledLoginContainer>
