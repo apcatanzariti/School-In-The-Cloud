@@ -2,34 +2,23 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { axiosWithAuth } from '../../utils/axiosWithAuth';
+import { getVolunteerById } from '../../utils/volunteerApi';
 
 
 
 const TaskListItem = (props) => {
 
   const { task, handleDelete, handleEdit } = props;
-
-  const [ adminName, setAdminName ] = useState(null);
   const [ volunteerName, setVolunteerName ] = useState(null);
 
   useEffect(() => {
-    if (task && task.admin_id) {
-      axiosWithAuth()
-      .get(`api/student/volunteers/${task.id}`)
+    if (task && task.volunteer_id) {
+      getVolunteerById(task.volunteer_id)
       .then(res => {
         setVolunteerName(res.data.username);
       });
     }
   }, [ task ]);
-
-  const handleDeleteClick = () => {
-    handleDelete && handleDelete(task.id);
-  }
-
-  const handleEditClick = () => {
-    handleEdit && handleEdit(task);
-  }
 
   return (
     <StyledTaskListItemDiv>
@@ -38,15 +27,14 @@ const TaskListItem = (props) => {
       {volunteerName &&
         <p className="assignee">Assigned to {volunteerName}</p>
       }
-      {/* <p className="creator">Created by {task.admin_id}</p> */}
       <div className='button-row'>
         {handleDelete &&
-          <button onClick={handleDeleteClick}>
+          <button onClick={() => handleDelete(task.id)}>
               Delete
           </button>
         }
         {handleEdit &&
-          <button onClick={handleEditClick}>
+          <button onClick={() => handleEdit(task)}>
               Edit
           </button>
         }

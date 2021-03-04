@@ -99,7 +99,7 @@ function AdminDash(props) {
             <StyledLeftSide>
                 <h1>Welcome {props.activeAdmin}!</h1>
                 <h3>Here is a list of your current tasks:</h3>
-                <TaskList tasks={tasks} />
+                <TaskList tasks={tasks} handleEdit={handleEdit} handleDelete={handleDelete} />
             </StyledLeftSide>
 
             <StyledRightSide>
