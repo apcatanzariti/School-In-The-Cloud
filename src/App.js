@@ -15,7 +15,7 @@ function App() {
 
   return (
     <StyledAppContainer>
-      <NavBar />
+      <NavBar activeLink={activeLink} setActiveLink={setActiveLink} />
       <Switch>
  
         <PrivateRoute path='/admin-dash' component={AdminDash} />

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 
-function NavBar () {
+function NavBar ({ activeLink, setActiveLink }) {
   
     const history = useHistory();
 
@@ -10,6 +10,7 @@ function NavBar () {
         // console.log('You logged out 👍');
         localStorage.removeItem('token');
         localStorage.removeItem('role');
+        setActiveLink(!activeLink);
         history.push('/');
     };
   
