@@ -1,4 +1,5 @@
-
+import { connect } from 'react-redux';
+import { fetchVolunteers } from './../actions/index';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FuzzySearch from 'fuzzy-search';
@@ -13,12 +14,15 @@ const dummyVolunteers = [
     { firstName: 'Glenn', lastName: 'Wylie', country: 'India', timeSlots: '10:00am, 11:00am', id: '9102' },
 ];
 
-function StudentDash () {
-
-    const [ volunteers, setVolunteers ] = useState(dummyVolunteers);
+function StudentDash ({ volunteers, fetchVolunteers }) {
+    // const [ volunteers, setVolunteers ] = useState([]);
     const [ filteredVolunteers, setFilteredVolunteers ] = useState(volunteers);
     const [ searchTerm, setSearchTerm ] = useState('');
     const [ fuzzySearcher, setFuzzySearcher ] = useState(null);
+
+    useEffect(() => {
+       fetchVolunteers(); 
+    },[]);
 
     useEffect(() => {
         setFuzzySearcher(
@@ -34,7 +38,7 @@ function StudentDash () {
     return(
         <StyledStudentDashDiv>
             <h1>Student Dashboard</h1>
-            <p>Find a volunteer to help with your issue! You can search by name, country, or time slot.</p>
+            <p>Find a volunteer to help you learn! You can search by name, country, or time slot.</p>
             <input
                 type='text'
                 placeholder='Find a volunteer...'
@@ -47,7 +51,13 @@ function StudentDash () {
     );
 };
 
-export default StudentDash;
+const mapStateToProps = ((state) => {
+    return {
+        volunteers: state.volunteers
+    };
+});
+
+export default connect(mapStateToProps, {fetchVolunteers})(StudentDash);
 
 
 
