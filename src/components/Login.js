@@ -10,13 +10,26 @@ function Login (props) {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
-    role: ''
+    role: ROLE.STUDENT
   });
 
   const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(true)
 
-  const history = useHistory();
+// Declare role enum
+const ROLE = {
+  STUDENT: 'student',
+  VOLUNTEER: 'volunteer',
+  ADMIN: 'admin'
+}
+
+const roleOptions = [
+  { name: 'Student', value: ROLE.STUDENT },
+  { name: 'Volunteer', value: ROLE.VOLUNTEER},
+  { name: 'Admin', value: ROLE.ADMIN },
+];
+
+const history = useHistory();
 
   function handleChange(e) {
     setCredentials({
@@ -66,18 +79,11 @@ function Login (props) {
 
       <form onSubmit={handleSubmit}>
 
-      <div>
-          <input
-            name="role"
-            type="text"
-            placeholder="Role"
-            value={credentials.role}
-            onChange={handleChange}
-          />
-        </div>
-
+        {/* Input Name */}
         <div>
+          <label htmlFor="username" />
           <input
+            id="name"
             name="username"
             type="text"
             placeholder="Username"
@@ -86,8 +92,11 @@ function Login (props) {
           />
         </div>
 
+        {/* Input Password */}
         <div>
+          <label htmlFor="password" />
           <input
+            id="password"
             name="password"
             type="password"
             placeholder="Password"
@@ -96,7 +105,24 @@ function Login (props) {
           />
         </div>
 
+        {/* Select Role */}
+        <div>
+          <select
+            name="role"
+            value={credentials.role || ROLE.STUDENT}
+            onChange={handleChange}
+          >
+            {roleOptions.map(role => (
+              <option value={role.value}>
+                {role.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Submit Button */}
         <button disabled={disabled}>Sign In</button>
+
         <center>
           <StyledError>{error}</StyledError>
         </center>
@@ -121,12 +147,15 @@ const StyledLoginContainer = styled.div`
   text-align: center;
   box-shadow: 0px 0px 10px lightgray;
   border-radius: 5px;
-  input {
+
+  input, select {
+    box-sizing: border-box;
     padding: 2%;
-    width: 60%;
+    width: 65%;
     margin-bottom: 6%;
     outline: none;
   }
+
   button {
     border: solid 1px #0096DB;
     color: #0096DB;
