@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import styled from 'styled-components';
 
 const SearchBar = ({ teamList }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,12 +35,12 @@ const SearchBar = ({ teamList }) => {
   };
 
   return (
-    <StyledSearchContainer>
+    <>
       <div>
         <label htmlFor="searchbar">Search: </label>
         <input
           ref={inputElement} //bind the input ref to the input element for the the search bar
-          placeholder="Team Member....                       🔍"
+          placeholder="Team Member....           🔍"
           id="searchbar"
           value={searchTerm}
           onChange={getSearchTerm}
@@ -80,19 +79,7 @@ const SearchBar = ({ teamList }) => {
           })
         )}
       </div>
-    </StyledSearchContainer>
+    </>
   );
 };
 export default SearchBar;
-
-const StyledSearchContainer = styled.div`
-  // border: solid 1px red;
-
-  input {
-    padding: .5%;
-    font-size: .9em;
-    width: 22%;
-    margin-left: .2%;
-    outline: none;
-  }
-`;
