@@ -8,9 +8,6 @@ import VolunteerDash from './components/VolunteerDash';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Footer from './components/Footer';
-// for searchbar
-import { useState, useEffect } from "react";
-import SearchBar from "./utils/Search";
 
 const data = [
   {
@@ -46,16 +43,10 @@ const data = [
 ];
 
 function App() {
-  const [teamList, setTeamList] = useState([]);
-
-  useEffect(() => {
-    // setTeamList(data);
-  }, []);
 
   return (
     <StyledAppContainer>
       <NavBar />
-      <SearchBar teamList={teamList} />
       <Switch>
         <Route path="/admin-dash">
           <AdminDash />

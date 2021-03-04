@@ -29,13 +29,17 @@ export default VolunteerList;
 
 function VolunteerListItem(props) {
 
-    const { firstName, lastName } = props.volunteer;
+    const { firstName, lastName, country, timeSlots } = props.volunteer;
 
     return (
         <StyledVolunteerListItemDiv>
-            <p className='name'>{`${firstName} ${lastName}`}</p>
+            <div className='name-row'>
+                <p className='name'>{firstName} {lastName}</p>
+                <p className='country'>{country}</p>
+            </div>
+            <p className='timeSlots'>Available: {timeSlots}</p>
         </StyledVolunteerListItemDiv>
-    )
+    );
 }
 
 
@@ -60,7 +64,19 @@ const StyledVolunteerListItemDiv = styled.div`
         margin: 5px 0;
     }
 
+    .name-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .name {
         font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .country {
+        color: gray;
     }
 `;
