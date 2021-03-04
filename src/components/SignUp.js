@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import signUp from './validation/signUpSchema.js'
+import { wait, waitFor } from '@testing-library/react';
 
 function SignUp () {
     const [credentials, setCredentials] = useState({
@@ -26,10 +27,23 @@ function SignUp () {
     };
 
     function handleChange (e) {
+        console.log(credentials)
         setCredentials({
             ...credentials,
             [e.target.name]: e.target.value
         });
+        setCredentials((state)=>{
+            signUp.isValid(state).then(valid => setDisabled(!valid))
+            signUp.validate(state)
+            .then(()=>{
+                setError('');
+            })
+            .catch((err)=>{
+                setError(err.errors[0])
+            })
+            return state
+        })
+        
     };
 
     function handleSubmit (e) {
@@ -58,17 +72,6 @@ function SignUp () {
             })
         }
     };
-
-    useEffect(() => {
-        signUp.isValid(credentials).then(valid => setDisabled(!valid))
-        signUp.validate(credentials)
-            .then(()=>{
-                setError('');
-            })
-            .catch((err)=>{
-                setError(err.errors[0])
-            })
-    }, [credentials])
 
     return(
         <StyledSignUpContainer>

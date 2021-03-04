@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -23,6 +23,17 @@ function AdminLogin(props) {
       ...credentials,
       [e.target.name]: e.target.value,
     });
+    setCredentials((state)=>{
+      signIn.isValid(state).then(valid => setDisabled(!valid))
+      signIn.validate(state)
+      .then(()=>{
+          setError('');
+      })
+      .catch((err)=>{
+          setError(err.errors[0])
+      })
+      return state
+    })
   }
 
   function handleSubmit(e) {
@@ -50,17 +61,6 @@ function AdminLogin(props) {
     }
   };
     
-  useEffect(() => {
-    signIn.isValid(credentials).then(valid => setDisabled(!valid))
-    signIn.validate(credentials)
-        .then(()=>{
-            setError('');
-        })
-        .catch((err)=>{
-            setError(err.errors[0])
-        })
-}, [credentials])
-
   return (
     <StyledLoginContainer>
       <h3>Sign In Here:</h3>

@@ -4,6 +4,8 @@ const USERNAME_MIN = 3;
 const PASSWORD_MIN = 3;
 
 const signUp = yup.object().shape({
+    role:yup.string()
+        .required("Role is required."),
     password:yup.string()
         .required("Password is required.")
         .min(PASSWORD_MIN, "Password too short."),
