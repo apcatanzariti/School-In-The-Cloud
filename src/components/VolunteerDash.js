@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import TaskList from './TaskList';
 
 const dummyTasks = [
-    { description: 'Buy pizza and chips for party', creator: 'Me', id: '2349' },
-    { description: 'Update student info', creator: 'Anthony', id: '6012' },
-    { description: 'Help out student with math homework', creator: 'Pat', id: '1425' },
-    { description: 'Fry an egg', creator: 'Jon', id: '8040' },
+    { title: 'Buy food for the party', description: "The party needs chips and soda. You can't have a party without snacks!", creator: 'Me', id: '2349' },
+    { title: 'Update student info', description: "A student has had all of their info stolen. Go track them down and figure out how to get them back in the system. We don't even know their name or anything, so good luck with that.", creator: 'Anthony', id: '6012' },
+    { title: 'Help out student with math homework', description: "A student needs help with calculus! Do you know calculus?? Does anybody know caluclus????", creator: 'Pat', id: '1425' },
+    { title: 'Fry an egg', description: 'Fry an egg', creator: 'Jon', id: '8040' },
 ];
 
 function VolunteerDash () {

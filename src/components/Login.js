@@ -1,138 +1,135 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { setActiveAdmin } from './../actions/index';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { connect } from "react-redux";
+import { setActiveAdmin } from "./../actions/index";
 import signIn from './validation/signInSchema.js'
 
+function AdminLogin(props) {
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
 
-function AdminLogin (props) {
-    const [credentials, setCredentials] = useState({
-        username: '',
-        password: ''
+  const [error, setError] = useState("");
+
+  const history = useHistory();
+
+  function handleChange(e) {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
     });
+  }
 
-    const [error, setError] = useState();
+  function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+    props.setActiveAdmin(credentials);
+    history.push("/admin-dash");
 
-    const [disabled, setDisabled] = useState(true)
+    // axios
+    // .post('http://localhost:5000/api/login', credentials)
+    // .then(res => {
+    //     localStorage.setItem('token', JSON.stringify(res.data.payload));
+    //     history.push('/admin-dash');
+    // })
+    // .catch(err => {
+    //     setError(err.response.data.error);
+    // })
+  }
+  useEffect(() => {
+    signIn.isValid(credentials).then(valid => setDisabled(!valid))
+    signIn.validate(credentials)
+        .then(()=>{
+            setError('');
+        })
+        .catch((err)=>{
+            setError(err.errors[0])
+        })
+}, [credentials])
 
-    const history = useHistory();
+  return (
+    <StyledLoginContainer>
+      <h3>Sign In Here:</h3>
 
-    function handleChange (e) {
-        setCredentials({
-            ...credentials,
-            [e.target.name]: e.target.value
-        });
-    };
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            name="username"
+            type="text"
+            placeholder="Username"
+            value={credentials.username}
+            onChange={handleChange}
+          />
+        </div>
 
-    function handleSubmit (e) {
-        e.preventDefault();
-        props.setActiveAdmin(credentials);
-        history.push('/admin-dash');
+        <div>
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={credentials.password}
+            onChange={handleChange}
+          />
+        </div>
 
-        // axios
-        // .post('http://localhost:5000/api/login', credentials)
-        // .then(res => {
-        //     localStorage.setItem('token', JSON.stringify(res.data.payload));
-        //     history.push('/admin-dash');
-        // })
-        // .catch(err => {
-        //     setError(err.response.data.error);
-        // })
-    };
+        <button>Sign In</button>
+        <center>
+          <StyledError>{error}</StyledError>
+        </center>
+      </form>
+    </StyledLoginContainer>
+  );
+}
 
-    useEffect(() => {
-        signIn.isValid(credentials).then(valid => setDisabled(!valid))
-        signIn.validate(credentials)
-            .then(()=>{
-                setError('');
-            })
-            .catch((err)=>{
-                setError(err.errors[0])
-            })
-    }, [credentials])
+function mapStateToProps(state) {
+  return {
+    activeAdmin: state.activeAdmin,
+  };
+}
 
-    return(
-        <StyledLoginContainer>
-            <h3>Sign In Here:</h3>
-
-            <form onSubmit={handleSubmit}>
-
-                <div>
-                <input 
-                name='username'
-                type='text'
-                placeholder='Username'
-                value={credentials.username}
-                onChange={handleChange}/>
-                </div>
-
-                <div>
-                <input 
-                name='password'
-                type='password'
-                placeholder='Password'
-                value={credentials.password}
-                onChange={handleChange}/>
-                </div>
-
-                <button disabled={disabled}>Sign In</button>
-                <center><StyledError>{error}</StyledError></center>
-
-            </form>
-        </StyledLoginContainer>
-    );
-};
-
-function mapStateToProps (state) {
-    return {
-        activeAdmin: state.activeAdmin
-    };
-};
-
-export default connect(mapStateToProps, {setActiveAdmin})(AdminLogin);
+export default connect(mapStateToProps, { setActiveAdmin })(AdminLogin);
 //export default AdminLogin;
 
 const StyledLoginContainer = styled.div`
-    // border: solid 1px red;
-    padding: 7.5% 0% 7.5% 0%;
-    width: 30%;
-    text-align: center;
-    box-shadow: 0px 0px 10px lightgray;
-    border-radius: 5px;
+  // border: solid 1px red;
+  padding: 7.5% 0% 7.5% 0%;
+  width: 30%;
+  text-align: center;
+  box-shadow: 0px 0px 10px lightgray;
+  border-radius: 5px;
+  input {
+    padding: 2%;
+    width: 60%;
+    margin-bottom: 6%;
+    outline: none;
+  }
+  button {
+    border: solid 1px #0096DB;
+    color: #0096DB;
+    background-color: white;
+    padding: 2% 4% 2% 4%;
+    transition: .3s;
+    outline: none;
+}
 
-    input {
-        padding: 2%;
-        width: 60%;
-        margin-bottom: 6%;
-        outline: none;
-    }
+button:disabled{
+    border: solid 1px lightgray;
+    color: lightgray;
+    cursor: not-allowed;
+}
 
-    button {
-        border: solid 1px #0096DB;
-        color: #0096DB;
-        background-color: white;
-        padding: 2% 4% 2% 4%;
-        transition: .3s;
-        outline: none;
-    }
-
-    button:disabled{
-        border: solid 1px lightgray;
-        color: lightgray;
-        cursor: not-allowed;
-    }
-
-    button:hover:enabled {
-        cursor: pointer;
-        background-color: #0096DB;
-        color: white;
-    }
+button:hover:enabled {
+    background-color: #0096DB;
+    cursor: pointer;
+    color: white;
+}
 `;
 
 const StyledError = styled.div`
-    color: red;
-    margin-top: 6%;
-    width: 70%;
+  color: red;
+  margin-top: 6%;
+  width: 70%;
 `;
