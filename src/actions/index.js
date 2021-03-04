@@ -29,8 +29,6 @@ export const FETCH_VOLUNTEERS_FAIL = 'FETCH_VOLUNTEERS_LOADING';
 
 export const fetchTasks = () => dispatch => {
 
-    console.log('FETCHING TASKS');
-
     dispatch(fetchTaskLoading());
 
     axiosWithAuth()
@@ -48,7 +46,6 @@ export const fetchTaskLoading = () => {
 };
 
 export const fetchTaskSuccess = (task) => {
-    console.log(task);
     return ({ type: FETCH_TASK_SUCCESS, payload: task });
 };
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 
 
-function Task (props) {
+function AdminTaskList (props) {
 
     const { item, handleDelete, handleEdit } = props;
 
@@ -37,7 +37,7 @@ function Task (props) {
     );
 };
 
-export default Task;
+export default AdminTaskList;
 
 
 

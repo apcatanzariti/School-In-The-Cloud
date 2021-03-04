@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import Task from "./Task";
+import TaskList from "./TaskList";
 import Modal from "./Modal";
 import EditTask from "./EditTask";
 import taskSchema from "./validation/addTaskSchema.js"
@@ -28,12 +28,8 @@ function AdminDash(props) {
   const [taskBeingEdited, setTaskBeingEdited] = useState(null);
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  useEffect(() => {
-    console.log(tasks);
-  }, [ tasks ]);
+    fetchTasks && fetchTasks();
+  }, [ fetchTasks ]);
 
   function handleChange(e) {
     setTask({
@@ -103,18 +99,7 @@ function AdminDash(props) {
             <StyledLeftSide>
                 <h1>Welcome {props.activeAdmin}!</h1>
                 <h3>Here is a list of your current tasks:</h3>
-                {
-                    props.tasks.length === 0 ? <div>Currently no tasks :(</div> :
-
-                    props.tasks.map(item => {
-                        return (
-                            props.tasks.length === 0 ? <div>Currently no tasks :(</div> :
-                            <>
-                            <Task item={item} taskList={props.tasks} handleDelete={handleDelete} handleEdit={handleEdit} />
-                            </>
-                        );
-                    })
-                }
+                <TaskList tasks={tasks} />
             </StyledLeftSide>
 
             <StyledRightSide>

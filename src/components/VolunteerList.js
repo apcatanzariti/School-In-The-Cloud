@@ -45,7 +45,7 @@ function VolunteerListItem(props) {
 
 
 const StyledVolunteerListDiv = styled.div`
-    width: 1000px;
+    max-width: 1000px;
     margin: 0 auto;
     border: 1px solid #d5d5d5;
     border-radius: 5px;
