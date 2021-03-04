@@ -4,7 +4,10 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import signUp from './validation/signUpSchema.js'
 
-function SignUp () {
+function SignUp (props) {
+
+    const { role } = props;
+
     const [credentials, setCredentials] = useState({
         username: '',
         password: '',
@@ -43,8 +46,15 @@ function SignUp () {
             // history.push('/student-dash');
             console.log(credentials);
             
+            // Doing this because including passwordconf breaks axios.
+            const axiosCredentials = {
+                username: credentials.username,
+                password: credentials.password,
+                role: credentials.role
+            };
+
             axios
-            .post('https://bw-backend-clouds.herokuapp.com/api/auth/register', credentials)
+            .post('https://bw-backend-clouds.herokuapp.com/api/auth/register', axiosCredentials)
             .then(res => {
                 console.log(res);
                 setCredentials({
