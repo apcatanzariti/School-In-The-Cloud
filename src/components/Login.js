@@ -6,11 +6,27 @@ import { connect } from "react-redux";
 import { setActiveAdmin } from "./../actions/index";
 import signIn from './validation/signInSchema.js'
 
+
+
+// Declare role enum
+const ROLE = {
+  STUDENT: 'student',
+  VOLUNTEER: 'volunteer',
+  ADMIN: 'admin'
+}
+
+const roleOptions = [
+  { name: 'Student', value: ROLE.STUDENT },
+  { name: 'Volunteer', value: ROLE.VOLUNTEER},
+  { name: 'Admin', value: ROLE.ADMIN },
+];
+
 function AdminLogin(props) {
+
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
-    role: ''
+    role: ROLE.STUDENT
   });
 
   const [error, setError] = useState("");
@@ -67,16 +83,7 @@ function AdminLogin(props) {
 
       <form onSubmit={handleSubmit}>
 
-      <div>
-          <input
-            name="role"
-            type="text"
-            placeholder="Role"
-            value={credentials.role}
-            onChange={handleChange}
-          />
-        </div>
-
+        {/* Input Name */}
         <div>
           <label htmlFor="username" />
           <input
@@ -89,6 +96,7 @@ function AdminLogin(props) {
           />
         </div>
 
+        {/* Input Password */}
         <div>
           <label htmlFor="password" />
           <input
@@ -101,7 +109,24 @@ function AdminLogin(props) {
           />
         </div>
 
+        {/* Select Role */}
+        <div>
+          <select
+            name="role"
+            value={credentials.role || ROLE.STUDENT}
+            onChange={handleChange}
+          >
+            {roleOptions.map(role => (
+              <option value={role.value}>
+                {role.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Submit Button */}
         <button disabled={disabled}>Sign In</button>
+
         <center>
           <StyledError>{error}</StyledError>
         </center>
@@ -126,12 +151,15 @@ const StyledLoginContainer = styled.div`
   text-align: center;
   box-shadow: 0px 0px 10px lightgray;
   border-radius: 5px;
-  input {
+
+  input, select {
+    box-sizing: border-box;
     padding: 2%;
-    width: 60%;
+    width: 65%;
     margin-bottom: 6%;
     outline: none;
   }
+
   button {
     border: solid 1px #0096DB;
     color: #0096DB;

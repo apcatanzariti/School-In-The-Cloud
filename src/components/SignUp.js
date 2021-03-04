@@ -4,13 +4,18 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import signUp from './validation/signUpSchema.js'
 
+
+
+const initialCredentials = {
+    username: '',
+    password: '',
+    passwordconf: '',
+    role: '',
+}
+
 function SignUp () {
-    const [credentials, setCredentials] = useState({
-        username: '',
-        password: '',
-        passwordconf: '',
-        role: ''
-    });
+
+    const [credentials, setCredentials] = useState(initialCredentials);
     const [error, setError] = useState('');
     const [activeForm, setActiveForm] = useState('');
     const [disabled, setDisabled] = useState(true)
@@ -43,15 +48,17 @@ function SignUp () {
             // history.push('/student-dash');
             console.log(credentials);
             
+            // Doing this because including passwordconf breaks axios.
+            const axiosCredentials = {
+                username: credentials.username,
+                password: credentials.password,
+                role: credentials.role
+            };
+
             axios
-            .post('https://bw-backend-clouds.herokuapp.com/api/auth/register', credentials)
+            .post('https://bw-backend-clouds.herokuapp.com/api/auth/register', axiosCredentials)
             .then(res => {
                 console.log(res);
-                setCredentials({
-                    username: '',
-                    password: '',
-                    role: ''
-                });
             })
             .catch(err => {
                 setError(err.response.data.error);
