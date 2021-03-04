@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { addTask } from "./../actions/index";
 import Task from "./Task";
 import Modal from "./Modal";
 import EditTask from "./EditTask";
 import taskSchema from "./validation/addTaskSchema.js"
 
+import { addTask, fetchTasks } from "./../actions/index";
+
+
+
 function AdminDash(props) {
+
+  const { tasks, fetchTasks } = props;
+
   const [task, setTask] = useState({
     id: Date.now(),
     title: "",
@@ -17,8 +23,17 @@ function AdminDash(props) {
   const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(true)
 
+  // For EditTask
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [taskBeingEdited, setTaskBeingEdited] = useState(null);
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  useEffect(() => {
+    console.log(tasks);
+  }, [ tasks ]);
 
   function handleChange(e) {
     setTask({
@@ -41,11 +56,13 @@ function AdminDash(props) {
     console.log(`the task with the id of: ${id} was deleted!`);
   }
 
+  // Sets the task being edited and opens the modal to edit it.
   function handleEdit(task) {
     setTaskBeingEdited(task);
     setEditModalOpen(true);
   }
 
+  // Saves changes to the task being edited. (Doesn't actually do anything yet)
   function saveTask(savedTask) {
     const id = savedTask.id;
     console.log(`saving changes to task with id: ${id}`, savedTask);
@@ -87,13 +104,13 @@ function AdminDash(props) {
                 <h1>Welcome {props.activeAdmin}!</h1>
                 <h3>Here is a list of your current tasks:</h3>
                 {
-                    props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
+                    props.tasks.length === 0 ? <div>Currently no tasks :(</div> :
 
-                    props.taskList.map(item => {
+                    props.tasks.map(item => {
                         return (
-                            props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
+                            props.tasks.length === 0 ? <div>Currently no tasks :(</div> :
                             <>
-                            <Task item={item} taskList={props.taskList} handleDelete={handleDelete} handleEdit={handleEdit} />
+                            <Task item={item} taskList={props.tasks} handleDelete={handleDelete} handleEdit={handleEdit} />
                             </>
                         );
                     })
@@ -134,12 +151,16 @@ function AdminDash(props) {
 
 function mapStateToProps (state) {
     return {
-        activeAdmin: state.activeAdmin,
-        taskList: state.admin.taskList  
+        tasks: state.tasks  
     };
 };
 
-export default connect(mapStateToProps, { addTask })(AdminDash);
+export default connect(mapStateToProps, { 
+  addTask,
+  fetchTasks
+})(AdminDash);
+
+
 
 const StyledDashContainer = styled.div`
   // border: solid 1px red;

@@ -1,3 +1,6 @@
+
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+
 export const FETCH_DATA = "FETCH_DATA";
 export const DATA_SUCCESSFUL = "DATA_SUCCESSFUL";
 export const DATA_FAILURE = "DATA_FAILURE";
@@ -22,14 +25,16 @@ export const FETCH_VOLUNTEERS_FAIL = 'FETCH_VOLUNTEERS_LOADING';
 //     })
 // };
 
-/* --------------------fetching tasks for the volunteer dash------------------
+/* --------------------fetching tasks for the volunteer dash------------------ */
 
 export const fetchTasks = () => dispatch => {
+
+    console.log('FETCHING TASKS');
 
     dispatch(fetchTaskLoading());
 
     axiosWithAuth()
-    .get('/api/tasks')
+    .get('/api/volunteers/tasks')
     .then((res) => {
         dispatch(fetchTaskSuccess(res.data));
     })
@@ -43,6 +48,7 @@ export const fetchTaskLoading = () => {
 };
 
 export const fetchTaskSuccess = (task) => {
+    console.log(task);
     return ({ type: FETCH_TASK_SUCCESS, payload: task });
 };
 
@@ -50,7 +56,7 @@ export const fetchTaskFail = (error) => {
     return ({ type: FETCH_TASK_FAIL, payload: error });
 };
 
--------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /* -----------fetching volunteers for the student dash-----------------------
 
@@ -96,7 +102,7 @@ export const addTask = (task) => {
     });
 };
 
-const removeTask = (taskToDelete) => {
+export const removeTask = (taskToDelete) => {
     return({
         type: DELETE_TASK,
         payload: taskToDelete

@@ -6,16 +6,14 @@ import signUp from './validation/signUpSchema.js'
 
 
 
-const initialCredentials = {
-    username: '',
-    password: '',
-    passwordconf: '',
-    role: '',
-}
+function SignUp (props) {
 
-function SignUp () {
-
-    const [credentials, setCredentials] = useState(initialCredentials);
+    const [credentials, setCredentials] = useState({
+        username: '',
+        password: '',
+        passwordconf: '',
+        role: ''
+    });
     const [error, setError] = useState('');
     const [activeForm, setActiveForm] = useState('');
     const [disabled, setDisabled] = useState(true)
@@ -59,6 +57,12 @@ function SignUp () {
             .post('https://bw-backend-clouds.herokuapp.com/api/auth/register', axiosCredentials)
             .then(res => {
                 console.log(res);
+                // setCredentials({
+                //     username: '',
+                //     password: '',
+                //     passwordconf: '',
+                //     role: ''
+                // });
             })
             .catch(err => {
                 setError(err.response.data.error);
