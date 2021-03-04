@@ -1,15 +1,30 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-function Footer () {
+function Footer ({ activeLink, setActiveLink }) {
+
+    const history = useHistory();
+
+    const logOut = () => {
+        // console.log('You logged out 👍');
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        setActiveLink(!activeLink);
+        history.push('/');
+    };
+
     return(
         <StyledFooterContainer>
             <Link to='/'><span>Home</span></Link>
-            <Link to='/admin-dash'><span>Admin Dashboard</span></Link>
-            <Link to='/student-dash'><span>Student Dashboard</span></Link>
-            <Link to='/volunteer-dash'><span>Volunteer Dashboard</span></Link>
-            <Link to='/'><span>Logout</span></Link>
+
+            <Link to={
+                JSON.parse(localStorage.getItem('role')) === null ? '/' :
+                `/${JSON.parse(localStorage.getItem('role'))}-dash`
+                }>Dashboard
+            </Link>
+
+            <Link to='/'><span onClick={e => {e.stopPropagation(); logOut();}}>Logout</span></Link>
 
             <p>Copyright © 2021 School in the Cloud</p>
         </StyledFooterContainer>
