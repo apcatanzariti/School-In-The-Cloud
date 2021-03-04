@@ -34,37 +34,6 @@ function SignUp() {
     });
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    // the 'else' portion of this will be replaced by the axios call
-    if (credentials.username === "" || credentials.password === "") {
-      setError("Username and Password must be filled out");
-    } else {
-      setError("");
-      // history.push('/student-dash');
-      console.log(credentials);
-
-      // Doing this because including passwordconf breaks axios.
-      const axiosCredentials = {
-        username: credentials.username,
-        password: credentials.password,
-        role: credentials.role,
-      };
-
-      axios
-        .post(
-          "https://bw-backend-clouds.herokuapp.com/api/auth/register",
-          axiosCredentials
-        )
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          setError(err.response.data.error);
-        });
-    };
-
     function handleSubmit (e) {
         e.preventDefault();
 
