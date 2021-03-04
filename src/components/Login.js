@@ -51,7 +51,9 @@ function AdminLogin(props) {
 
       <form onSubmit={handleSubmit}>
         <div>
+          <label htmlFor="username" />
           <input
+            id="name"
             name="username"
             type="text"
             placeholder="Username"
@@ -61,7 +63,9 @@ function AdminLogin(props) {
         </div>
 
         <div>
+          <label htmlFor="password" />
           <input
+            id="password"
             name="password"
             type="password"
             placeholder="Password"

@@ -1,74 +1,66 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 function TaskList(props) {
+  const { tasks } = props;
 
-    const { tasks } = props;
+  if (!tasks) {
+    return <p>Loading tasks...</p>;
+  }
 
-    if (!tasks) {
-        return <p>Loading tasks...</p>
-    }
+  if (tasks.length === 0) {
+    return <p>No tasks found.</p>;
+  }
 
-    if (tasks.length === 0) {
-        return <p>No tasks found.</p>
-    }
-
-
-    return (
-        <StyledTaskListDiv>
-            {tasks.map(task => (
-                <TaskListItem task={task} key={task.id} />
-            ))}
-        </StyledTaskListDiv>
-    )
+  return (
+    <StyledTaskListDiv>
+      {tasks.map((task) => (
+        <TaskListItem task={task} key={task.id} />
+      ))}
+    </StyledTaskListDiv>
+  );
 }
 
 export default TaskList;
 
-
-
 function TaskListItem(props) {
+  const { title, description, creator } = props.task;
 
-    const { title, description, creator } = props.task;
-
-    return (
-        <StyledTaskListItemDiv>
-            <p className='title'>{title}</p>
-            <p className='description'>{description}</p>
-            <p className='creator'>{creator}</p>
-        </StyledTaskListItemDiv>
-    )
+  return (
+    <StyledTaskListItemDiv>
+      <p className="title">{title}</p>
+      <p className="description">{description}</p>
+      <p className="creator">{creator}</p>
+    </StyledTaskListItemDiv>
+  );
 }
 
-
-
 const StyledTaskListDiv = styled.div`
-    width: 1000px;
-    margin: 0 auto;
-    border: 1px solid #d5d5d5;
-    border-radius: 5px;
+  width: 1000px;
+  margin: 0 auto;
+  border: 1px solid #d5d5d5;
+  border-radius: 5px;
 `;
 
 const StyledTaskListItemDiv = styled.div`
+  padding: 10px 15px;
+  border-bottom: 1px solid #d5d5d5;
 
-    padding: 10px 15px;
-    border-bottom: 1px solid #d5d5d5;
+  &:last-child {
+    border-bottom: none;
+  }
 
-    &:last-child {
-        border-bottom: none;
-    }
+  p {
+    margin: 5px 0;
+  }
 
-    p {
-        margin: 5px 0;
-    }
+  .title {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
 
-    .title {
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    .creator {
-        color: gray;
-        font-style: italic;
-    }
+  .creator {
+    color: gray;
+    font-style: italic;
+  }
 `;
