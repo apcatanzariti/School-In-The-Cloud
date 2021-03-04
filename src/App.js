@@ -1,38 +1,27 @@
-import { Switch, Route } from 'react-router-dom';
-import styled from 'styled-components';
-import NavBar from './components/NavBar';
-import AdminDash from './components/AdminDash';
-import StudentDash from './components/StudentDash';
-import VolunteerDash from './components/VolunteerDash';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
-import Footer from './components/Footer';
-import PrivateRoute from './utils/PrivateRoute';
+import { useState } from "react";
+import { Switch, Route } from "react-router-dom";
+import styled from "styled-components";
+import NavBar from "./components/NavBar";
+import AdminDash from "./components/AdminDash";
+import StudentDash from "./components/StudentDash";
+import VolunteerDash from "./components/VolunteerDash";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
+import Footer from "./components/Footer";
+import PrivateRoute from "./utils/PrivateRoute";
 
 function App() {
+  const [activeLink, setActiveLink] = useState(false);
 
   return (
     <StyledAppContainer>
-      <NavBar />
+      <NavBar activeLink={activeLink} setActiveLink={setActiveLink} />
       <Switch>
-        
-        {/* <Route path="/admin-dash">
-          <AdminDash />
-        </Route> */}
- 
-        <PrivateRoute path='/admin-dash' component={AdminDash} />
+        <PrivateRoute path="/admin-dash" component={AdminDash} />
 
-        {/* <Route path="/student-dash">
-          <StudentDash />
-        </Route> */}
+        <PrivateRoute path="/student-dash" component={StudentDash} />
 
-        <PrivateRoute path='/student-dash' component={StudentDash} />
-
-        {/* <Route path="/volunteer-dash">
-          <VolunteerDash />
-        </Route> */}
-
-        <PrivateRoute path='/volunteer-dash' component={VolunteerDash} />
+        <PrivateRoute path="/volunteer-dash" component={VolunteerDash} />
 
         <Route path="/">
           <StyledIntroDiv>
@@ -53,17 +42,18 @@ function App() {
               alt="student studying"
             />
           </StyledIntroDiv>
-
-          <StyledLoginContainer>
-
-          <Login />
-          <SignUp />
-
-          </StyledLoginContainer>
+          {localStorage.getItem("token") || localStorage.getItem("role") ? (
+            ""
+          ) : (
+            <StyledLoginContainer>
+              <Login activeLink={activeLink} setActiveLink={setActiveLink} />
+              <SignUp />
+            </StyledLoginContainer>
+          )}
         </Route>
       </Switch>
 
-      <Footer />
+      <Footer activeLink={activeLink} setActiveLink={setActiveLink}/>
     </StyledAppContainer>
   );
 }

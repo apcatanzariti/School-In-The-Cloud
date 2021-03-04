@@ -55,14 +55,14 @@ export const fetchTaskFail = (error) => {
 
 /* -------------------------------------------------------------------------- */
 
-/* -----------fetching volunteers for the student dash-----------------------
+/* -----------fetching volunteers for the student dash---------------------*/
 
 export const fetchVolunteers = () => dispatch => {
 
     dispatch(fetchVolunteersLoading());
 
     axiosWithAuth()
-    .get('/api/volunteers')
+    .get('/api/student/volunteers')
     .then((res) => {
         dispatch(fetchVolunteersSuccess(res.data));
     })
@@ -71,19 +71,19 @@ export const fetchVolunteers = () => dispatch => {
     })
 };
 
-export const fetchVolunteersLoading = () => {
+const fetchVolunteersLoading = () => {
     return ({ type: FETCH_VOLUNTEERS_LOADING });
 };
 
-export const fetchVolunteersSuccess = (volunteer) => {
+const fetchVolunteersSuccess = (volunteer) => {
     return ({ type: FETCH_VOLUNTEERS_SUCCESS, payload: volunteer });
 };
 
-export const fetchVolunteersFail = (error) => {
+const fetchVolunteersFail = (error) => {
     return ({ type: FETCH_VOLUNTEERS_FAIL, payload: error });
 };
 
--------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------ */
 
 export const setActiveAdmin = (user) => {
     return({

@@ -2,16 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 
-function NavBar () {
+function NavBar({ activeLink, setActiveLink }) {
+  const history = useHistory();
 
-    const history = useHistory();
+  const logOut = () => {
+    // console.log('You logged out 👍');
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    setActiveLink(!activeLink);
+    history.push("/");
+  };
 
-    const logOut = () => {
-        console.log('You logged out 👍');
-        // localStorage.removeItem('token');
-        // history.push('/');
-    };
-  
   return (
     <StyledNavContainer>
       <Link to="/">
@@ -26,19 +27,24 @@ function NavBar () {
           <StyledLink>Home</StyledLink>
         </Link>
 
-        <Link to="/admin-dash">
-          <StyledLink>Admin Dashboard</StyledLink>
+        <Link
+          to={
+            JSON.parse(localStorage.getItem("role")) === null
+              ? "/"
+              : `/${JSON.parse(localStorage.getItem("role"))}-dash`
+          }
+        >
+          <StyledLink>Dashboard</StyledLink>
         </Link>
 
-        <Link to="/student-dash">
-          <StyledLink>Student Dashboard</StyledLink>
-        </Link>
-
-        <Link to="/volunteer-dash">
-          <StyledLink>Volunteer Dashboard</StyledLink>
-        </Link>
-
-          <StyledLogOut onClick={e => {e.stopPropagation(); logOut();}}>Logout</StyledLogOut>
+        <StyledLogOut
+          onClick={(e) => {
+            e.stopPropagation();
+            logOut();
+          }}
+        >
+          Logout
+        </StyledLogOut>
       </StyledLinksDiv>
     </StyledNavContainer>
   );
@@ -50,7 +56,7 @@ const StyledNavContainer = styled.div`
   // border: 1px solid red;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   border-bottom: solid 1px #0096db;
 
   img {
@@ -63,7 +69,7 @@ const StyledLinksDiv = styled.div`
   // border: solid 1px yellow;
   display: flex;
   justify-content: space-evenly;
-  width: 80%;
+  width: 50%;
   align-items: center;
   font-size: 1.2em;
   margin-right: 4.5%;
@@ -86,13 +92,13 @@ const StyledLink = styled.div`
 `;
 
 const StyledLogOut = styled.div`
-    color: #0096DB;
-    padding: 7px 12px 7px 12px;
-    cursor: pointer;
-    transition: .3s;
+  color: #0096db;
+  padding: 7px 12px 7px 12px;
+  cursor: pointer;
+  transition: 0.3s;
 
-    :hover {
-        color: white;
-        background-color: #0096DB;
-    }
+  :hover {
+    color: white;
+    background-color: #0096db;
+  }
 `;
