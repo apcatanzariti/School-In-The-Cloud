@@ -1,9 +1,10 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import FuzzySearch from 'fuzzy-search';
 
 import VolunteerList from './VolunteerList';
+import SearchBar from './../utils/Search';
 
 const dummyVolunteers = [
     { firstName: 'April', lastName: 'Wells', country: 'United States', timeSlots: '9:00am, 10:00am, 11:00am', id: '1123' },
@@ -14,8 +15,12 @@ const dummyVolunteers = [
 ];
 
 function StudentDash () {
-
     const [ volunteers, setVolunteers ] = useState(dummyVolunteers);
+    const [teamList, setTeamList] = useState([]);
+
+    useEffect(() => {
+        // setTeamList(dummyVolunteers);
+    }, []);
     const [ filteredVolunteers, setFilteredVolunteers ] = useState(volunteers);
     const [ searchTerm, setSearchTerm ] = useState('');
     const [ fuzzySearcher, setFuzzySearcher ] = useState(null);
@@ -34,6 +39,7 @@ function StudentDash () {
     return(
         <StyledStudentDashDiv>
             <h1>Student Dashboard</h1>
+            <SearchBar teamList={teamList} />
             <p>Find a volunteer to help with your issue! You can search by name, country, or time slot.</p>
             <input
                 type='text'
