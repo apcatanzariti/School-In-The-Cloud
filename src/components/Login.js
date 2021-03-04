@@ -30,20 +30,21 @@ function AdminLogin(props) {
       setError("Username and Password must be filled out");
     } else {
       setError("");
-      props.setActiveAdmin(credentials);
-      history.push("/admin-dash");
+      // props.setActiveAdmin(credentials);
+      // history.push("/admin-dash");
+      
+      axios
+      .post('https://bw-backend-clouds.herokuapp.com/api/auth/login', credentials)
+      .then(res => {
+          //localStorage.setItem('token', JSON.stringify(res.data.password));
+          //history.push('/admin-dash');
+          console.log(res);
+      })
+      .catch(err => {
+          setError(err.response.data.error);
+      })
     }
-
-    // axios
-    // .post('http://localhost:5000/api/login', credentials)
-    // .then(res => {
-    //     localStorage.setItem('token', JSON.stringify(res.data.payload));
-    //     history.push('/admin-dash');
-    // })
-    // .catch(err => {
-    //     setError(err.response.data.error);
-    // })
-  }
+  };
 
   return (
     <StyledLoginContainer>

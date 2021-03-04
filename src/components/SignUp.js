@@ -39,17 +39,23 @@ function SignUp () {
             setError('');
             // history.push('/student-dash');
             console.log(credentials);
+            
+            axios
+            .post('https://bw-backend-clouds.herokuapp.com/api/auth/register', credentials)
+            .then(res => {
+                localStorage.setItem('token', JSON.stringify(res.data.password));
+                // console.log(res);
+                setCredentials({
+                    username: '',
+                    password: '',
+                    role: ''
+                });
+                history.push(`${credentials.role}-dash`);
+            })
+            .catch(err => {
+                setError(err.response.data.error);
+            })
         }
-
-        // axios
-        // .post('http://localhost:5000/api/login', credentials)
-        // .then(res => {
-        //     localStorage.setItem('token', JSON.stringify(res.data.payload));
-        //     history.push('/student-dash');
-        // })
-        // .catch(err => {
-        //     setError(err.response.data.error);
-        // })
     };
 
     return(
@@ -59,11 +65,11 @@ function SignUp () {
             {
                 activeForm === '' ? 
                 <>
-                <div><button onClick={e => {e.stopPropagation(); changeActive('Admin');}}>An Administrator</button></div>
+                <div><button onClick={e => {e.stopPropagation(); changeActive('admin');}}>An Administrator</button></div>
 
-                <div><button onClick={e => {e.stopPropagation(); changeActive('Student');}}>A Student</button></div>
+                <div><button onClick={e => {e.stopPropagation(); changeActive('student');}}>A Student</button></div>
     
-                <div><button onClick={e => {e.stopPropagation(); changeActive('Volunteer');}}>A Volunteer</button></div> </> : null
+                <div><button onClick={e => {e.stopPropagation(); changeActive('volunteer');}}>A Volunteer</button></div> </> : null
             }
 
             {
