@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import TaskList from "./TaskList";
+import TaskList from "./TaskList/index";
 import Modal from "./Modal";
 import EditTask from "./EditTask";
 import taskSchema from "./validation/addTaskSchema.js"
@@ -108,20 +108,10 @@ function AdminDash(props) {
     return(
         <StyledDashContainer>
             <StyledLeftSide>
-                <h1>Welcome {props.activeAdmin}!</h1>
                 <h3>Here is a list of your current tasks:</h3>
-                {
-                    props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
 
-                    props.taskList.map(item => {
-                        return (
-                            props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
-                            <>
-                            <Task item={item} taskList={props.taskList} handleDelete={handleDelete} handleEdit={handleEdit} />
-                            </>
-                        );
-                    })
-                }
+                <TaskList tasks={tasks} handleDelete={handleDelete} handleEdit={handleEdit}/>
+                
             </StyledLeftSide>
 
             <StyledRightSide>

@@ -30,7 +30,7 @@ function SignUp() {
   }
 
   function handleChange (e) {
-        console.log(credentials)
+        // console.log(credentials)
         setCredentials({
             ...credentials,
             [e.target.name]: e.target.value
