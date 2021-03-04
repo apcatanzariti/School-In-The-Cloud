@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import TaskList from "./TaskList";
@@ -36,6 +36,17 @@ function AdminDash(props) {
       ...task,
       [e.target.name]: e.target.value,
     });
+    setTask((state)=>{
+      taskSchema.isValid(state).then(valid => setDisabled(!valid))
+      taskSchema.validate(state)
+      .then(()=>{
+          setError('');
+      })
+      .catch((err)=>{
+          setError(err.errors[0])
+      })
+      return state
+  })
   }
 
   function handleSubmit(e) {
@@ -76,43 +87,72 @@ function AdminDash(props) {
           })
   }, [task])
 
-  return(
-      <StyledDashContainer>
-          <StyledLeftSide>
-              <h1>Welcome {props.activeAdmin}!</h1>
-              <h3>Here is a list of your current tasks:</h3>
-              <TaskList tasks={tasks} handleEdit={handleEdit} handleDelete={handleDelete} />
-          </StyledLeftSide>
+    // function submitNewTask(e) {
+    //     e.preventDefault();
 
-          <StyledRightSide>
-              <h1>Add a new task here</h1>
-              <form onSubmit={handleSubmit}>
-                  <div>
-                      <input
-                      name='title'
-                      type='text'
-                      value={task.title}
-                      placeholder='Title'
-                      onChange={handleChange}/>
-                  </div>
+    //     if (newTask.title === '' || newTask.description === '') {
+    //         setError('All fields must be filled out')
+    //     } else {
+    //         axios
+    //         .post('http://localhost:5000/api/tasks', newTask)
+    //         .then(res => {
+    //           props.setTaskList(res.data);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         })
+    //         setIsAdding: false;
+    //     }
+    // };
 
-                  <div>
-                      <textarea
-                      name='description'
-                      value={task.description}
-                      placeholder='Description...'
-                      rows='5'
-                      onChange={handleChange}/>
-                  </div>
+    return(
+        <StyledDashContainer>
+            <StyledLeftSide>
+                <h1>Welcome {props.activeAdmin}!</h1>
+                <h3>Here is a list of your current tasks:</h3>
+                {
+                    props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
 
-                  <button disabled={disabled}>Add Task</button>
-                  <StyledError>{error}</StyledError>
-              </form>
-          </StyledRightSide>
-          <Modal open={editModalOpen} setOpen={setEditModalOpen}>
-              <EditTask task={taskBeingEdited} saveTask={saveTask} />
-          </Modal>
-      </StyledDashContainer>
+                    props.taskList.map(item => {
+                        return (
+                            props.taskList.length === 0 ? <div>Currently no tasks :(</div> :
+                            <>
+                            <Task item={item} taskList={props.taskList} handleDelete={handleDelete} handleEdit={handleEdit} />
+                            </>
+                        );
+                    })
+                }
+            </StyledLeftSide>
+
+            <StyledRightSide>
+                <h1>Add a new task here</h1>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <input
+                        name='title'
+                        type='text'
+                        value={task.title}
+                        placeholder='Title'
+                        onChange={handleChange}/>
+                    </div>
+
+                    <div>
+                        <textarea
+                        name='description'
+                        value={task.description}
+                        placeholder='Description...'
+                        rows='5'
+                        onChange={handleChange}/>
+                    </div>
+
+                    <button disabled={disabled}>Add Task</button>
+                    <StyledError>{error}</StyledError>
+                </form>
+            </StyledRightSide>
+            <Modal open={editModalOpen} setOpen={setEditModalOpen}>
+                <EditTask task={taskBeingEdited} saveTask={saveTask} />
+            </Modal>
+        </StyledDashContainer>
     );
 };
 

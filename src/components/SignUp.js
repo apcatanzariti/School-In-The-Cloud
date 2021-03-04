@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
-import signUp from "./validation/signUpSchema.js";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import signUp from './validation/signUpSchema.js'
+import { wait, waitFor } from '@testing-library/react';
 
 
 
@@ -28,12 +29,25 @@ function SignUp() {
     });
   }
 
-  function handleChange(e) {
-    setCredentials({
-      ...credentials,
-      [e.target.name]: e.target.value,
-    });
-  }
+  function handleChange (e) {
+        console.log(credentials)
+        setCredentials({
+            ...credentials,
+            [e.target.name]: e.target.value
+        });
+        setCredentials((state)=>{
+            signUp.isValid(state).then(valid => setDisabled(!valid))
+            signUp.validate(state)
+            .then(()=>{
+                setError('');
+            })
+            .catch((err)=>{
+                setError(err.errors[0])
+            })
+            return state
+        })
+        
+    };
 
     function handleSubmit (e) {
         e.preventDefault();
