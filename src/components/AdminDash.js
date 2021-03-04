@@ -5,6 +5,7 @@ import { addTask } from "./../actions/index";
 import Task from "./Task";
 import Modal from "./Modal";
 import EditTask from "./EditTask";
+import taskSchema from "./validation/addTaskSchema.js"
 
 function AdminDash(props) {
   const [task, setTask] = useState({
@@ -14,6 +15,7 @@ function AdminDash(props) {
   });
 
   const [error, setError] = useState("");
+  const [disabled, setDisabled] = useState(true)
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [taskBeingEdited, setTaskBeingEdited] = useState(null);
@@ -119,7 +121,7 @@ function AdminDash(props) {
                         onChange={handleChange}/>
                     </div>
 
-                    <button>Add Task</button>
+                    <button disabled={disabled}>Add Task</button>
                     <StyledError>{error}</StyledError>
                 </form>
             </StyledRightSide>

@@ -13,6 +13,7 @@ function AdminLogin(props) {
   });
 
   const [error, setError] = useState("");
+  const [disabled, setDisabled] = useState(true)
 
   const history = useHistory();
 
@@ -75,7 +76,7 @@ function AdminLogin(props) {
           />
         </div>
 
-        <button>Sign In</button>
+        <button disabled={disabled}>Sign In</button>
         <center>
           <StyledError>{error}</StyledError>
         </center>
