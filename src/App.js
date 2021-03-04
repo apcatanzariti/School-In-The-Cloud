@@ -9,53 +9,13 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Footer from './components/Footer';
 // for searchbar
-import { useState, useEffect } from "react";
-import SearchBar from "./utils/Search";
-
-const data = [
-  {
-    id: 0,
-    name: "patrick",
-    age: 24,
-    location: "Bradenton, FL",
-  },
-  {
-    id: 1,
-    name: "Karen",
-    age: 24,
-    location: "Hudson, NY",
-  },
-  {
-    id: 2,
-    name: "Jessica",
-    age: 42,
-    location: "Boise, ID",
-  },
-  {
-    id: 3,
-    name: "Frank",
-    age: 35,
-    location: "St.Louis, MO",
-  },
-  {
-    id: 4,
-    name: "Xavier",
-    age: 55,
-    location: "Los Vegas",
-  },
-];
 
 function App() {
-  const [teamList, setTeamList] = useState([]);
-
-  useEffect(() => {
-    // setTeamList(data);
-  }, []);
-
   return (
     <StyledAppContainer>
+
       <NavBar />
-      <SearchBar teamList={teamList} />
+      
       <Switch>
         <Route path="/admin-dash">
           <AdminDash />

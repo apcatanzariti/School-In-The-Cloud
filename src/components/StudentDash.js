@@ -1,8 +1,7 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
 import VolunteerList from './VolunteerList';
+import SearchBar from './../utils/Search';
 
 const dummyVolunteers = [
     { firstName: 'April', lastName: 'Wells', id: '1123' },
@@ -13,12 +12,17 @@ const dummyVolunteers = [
 ];
 
 function StudentDash () {
-
     const [ volunteers, setVolunteers ] = useState(dummyVolunteers);
+    const [teamList, setTeamList] = useState([]);
+
+    useEffect(() => {
+        // setTeamList(dummyVolunteers);
+    }, []);
 
     return(
         <StyledStudentDashDiv>
             <h1>Student Dashboard</h1>
+            <SearchBar teamList={teamList} />
             <h2>Volunteers</h2>
             <VolunteerList volunteers={volunteers} />
         </StyledStudentDashDiv>
