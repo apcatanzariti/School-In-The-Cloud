@@ -8,31 +8,7 @@ export const initialState = {
   role: '',
   isFetching: false,
   fetchError: '',
-  volunteers: [],
-  // the stuff below here will be changing
-  activeAdmin: '',
-    activeStudent: '',
-    activeVolunteer: '',
-    admin: {
-        name: '',
-        taskList: [
-            {
-                id: '1',
-                title: 'task 1',
-                description: 'Do something!'
-            },
-            {
-                id: '2',
-                title: 'task 2',
-                description: 'Do something else!'
-            },
-            {
-                id: '3',
-                title: 'task 3',
-                description: 'Do a third thing!'
-            }
-        ]
-    }
+  volunteers: [{firstName:'Brad', lastName:'Marchand', country:'Boston', timeSlots: 'never'}]
 };
 
 const reducer = (state = initialState, action) => {

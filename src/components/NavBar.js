@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Link, useHistory } from 'react-router-dom';
 
 function NavBar({ activeLink, setActiveLink }) {
   const history = useHistory();

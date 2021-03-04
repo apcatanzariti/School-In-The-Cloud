@@ -3,8 +3,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
-import { setActiveAdmin } from "./../actions/index";
-import signIn from "./validation/signInSchema.js";
+import signIn from './validation/signInSchema.js';
 
 function Login(props) {
   const [error, setError] = useState("");
@@ -59,7 +58,7 @@ function Login(props) {
             JSON.stringify(JSON.parse(res.config.data).role)
           );
           props.setActiveLink(!props.activeLink);
-          //history.push('/credentials.role/-dash');
+          history.push(`/${credentials.role}-dash`);
           console.log(res);
         })
         .catch((err) => {
