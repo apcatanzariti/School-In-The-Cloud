@@ -6,7 +6,15 @@ import { connect } from "react-redux";
 import { setActiveAdmin } from "./../actions/index";
 import signIn from './validation/signInSchema.js'
 
+function Login (props) {
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+    role: ROLE.STUDENT
+  });
 
+  const [error, setError] = useState("");
+  const [disabled, setDisabled] = useState(true)
 
 // Declare role enum
 const ROLE = {
@@ -21,18 +29,7 @@ const roleOptions = [
   { name: 'Admin', value: ROLE.ADMIN },
 ];
 
-function AdminLogin(props) {
-
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-    role: ROLE.STUDENT
-  });
-
-  const [error, setError] = useState("");
-  const [disabled, setDisabled] = useState(true)
-
-  const history = useHistory();
+const history = useHistory();
 
   function handleChange(e) {
     setCredentials({
@@ -44,12 +41,10 @@ function AdminLogin(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    // the 'else' portion of this will be replaced by the axios call
     if (credentials.username === "" || credentials.password === "") {
       setError("Username and Password must be filled out");
     } else {
       setError("");
-      // props.setActiveAdmin(credentials);
       // history.push("/admin-dash");
       
       axios
@@ -57,6 +52,7 @@ function AdminLogin(props) {
       .then(res => {
           localStorage.setItem('token', JSON.stringify(res.data.token));
           localStorage.setItem('role', JSON.stringify(JSON.parse(res.config.data).role));
+          props.setActiveLink(!props.activeLink);
           //history.push('/credentials.role/-dash');
           console.log(res);
       })
@@ -141,7 +137,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { setActiveAdmin })(AdminLogin);
+export default connect(mapStateToProps)(Login);
 //export default AdminLogin;
 
 const StyledLoginContainer = styled.div`
