@@ -6,21 +6,18 @@ import Modal from "./Modal";
 import EditTask from "./EditTask";
 import taskSchema from "./validation/addTaskSchema.js"
 
-import { addTask, fetchTasks } from "./../actions/index";
+import { addTask, fetchTasks, fetchVolunteers } from "./../actions/index";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 
 
 function AdminDash(props) {
 
-  const { tasks, fetchTasks } = props;
+  const { tasks, fetchTasks, addTask, volunteers, fetchVolunteers } = props;
 
-  const [task, setTask] = useState({
-    id: Date.now(),
-    title: "",
-    description: "",
-  });
+  const [task, setTask] = useState({});
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [disabled, setDisabled] = useState(true);
 
   // For EditTask
@@ -29,132 +26,119 @@ function AdminDash(props) {
 
   useEffect(() => {
     fetchTasks && fetchTasks();
-  }, [ fetchTasks ]);
+    fetchVolunteers && fetchVolunteers();
+  }, [ fetchTasks, fetchVolunteers ]);
 
-  function handleChange(e) {
-    setTask({
+  function handleAddTask(task) {
+
+    const axiosTask = {
       ...task,
-      [e.target.name]: e.target.value,
-    });
-    setTask((state)=>{
-      taskSchema.isValid(state).then(valid => setDisabled(!valid))
-      taskSchema.validate(state)
-      .then(()=>{
-          setError('');
-      })
-      .catch((err)=>{
-          setError(err.errors[0])
-      })
-      return state
-  })
-  }
+      admin_id: JSON.parse(localStorage.getItem('user'))?.id
+    };
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    props.addTask(task);
-    setTask({
-    title: "",
-    description: "",
-    });
+    console.log(axiosTask);
+
+    axiosWithAuth()
+      .post('/api/admin/tasks', axiosTask)
+      .then(res => {
+        console.log(res);
+        setTask({});
+        fetchTasks();
+      })
+      .catch(err => console.error(err));
   }
     
   function handleDelete(id) {
-    // this will eventually do some actual deleting
-    console.log(`the task with the id of: ${id} was deleted!`);
+    axiosWithAuth()
+      .delete(`/api/volunteers/tasks/${id}`)
+      .then(res => {
+        console.log(res);
+        fetchTasks();
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  // Saves changes to the task being edited.
+  function handleEditTask(editedTask) {
+
+    setEditModalOpen(false);
+    const id = editedTask.id;
+
+    axiosWithAuth()
+      .put(`/api/admin/${id}/tasks`, editedTask)
+      .then(res => {
+        console.log(res);
+        fetchTasks();
+      })
+      .catch(err => {
+        console.error(err);
+      })
   }
 
   // Sets the task being edited and opens the modal to edit it.
-  function handleEdit(task) {
+  function openEditTask(task) {
     setTaskBeingEdited(task);
     setEditModalOpen(true);
   }
 
-  // Saves changes to the task being edited. (Doesn't actually do anything yet)
-  function saveTask(savedTask) {
-    const id = savedTask.id;
-    console.log(`saving changes to task with id: ${id}`, savedTask);
-    setEditModalOpen(false);
-  }
-
   useEffect(() => {
-      taskSchema.isValid(task).then(valid => setDisabled(!valid))
-      taskSchema.validate(task)
-          .then(()=>{
-              setError('');
-          })
-          .catch((err)=>{
-              setError(err.errors[0])
-          })
+    taskSchema.isValid(task).then(valid => setDisabled(!valid))
+    taskSchema.validate(task)
+      .then(()=>{
+        setError('');
+      })
+      .catch((err)=>{
+        setError(err.errors[0])
+      })
   }, [task])
-
-    // function submitNewTask(e) {
-    //     e.preventDefault();
-
-    //     if (newTask.title === '' || newTask.description === '') {
-    //         setError('All fields must be filled out')
-    //     } else {
-    //         axios
-    //         .post('http://localhost:5000/api/tasks', newTask)
-    //         .then(res => {
-    //           props.setTaskList(res.data);
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         })
-    //         setIsAdding: false;
-    //     }
-    // };
 
     return(
         <StyledDashContainer>
+
             <StyledLeftSide>
                 <h3>Here is a list of your current tasks:</h3>
-
-                <TaskList tasks={tasks} handleDelete={handleDelete} handleEdit={handleEdit}/>
-                
+                <TaskList tasks={tasks} handleDelete={handleDelete} handleEdit={openEditTask}/>
             </StyledLeftSide>
 
             <StyledRightSide>
                 <h1>Add a new task here</h1>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <input
-                        name='title'
-                        type='text'
-                        value={task.title}
-                        placeholder='Title'
-                        onChange={handleChange}/>
-                    </div>
-
-                    <div>
-                        <textarea
-                        name='description'
-                        value={task.description}
-                        placeholder='Description...'
-                        rows='5'
-                        onChange={handleChange}/>
-                    </div>
-
-                    <button disabled={disabled}>Add Task</button>
-                    <StyledError>{error}</StyledError>
-                </form>
+                <EditTask
+                  originalTask={task}
+                  onSubmit={handleAddTask}
+                  volunteers={volunteers}
+                  buttonText={'Add Task'}
+                />
             </StyledRightSide>
+
             <Modal open={editModalOpen} setOpen={setEditModalOpen}>
-                <EditTask task={taskBeingEdited} saveTask={saveTask} />
+              <StyledEditTextDiv>
+                <h2>Edit a Task</h2>
+                <EditTask
+                  originalTask={taskBeingEdited}
+                  volunteers={volunteers}
+                  onSubmit={handleEditTask}
+                  buttonText={'Save Changes'}
+                />
+              </StyledEditTextDiv>
             </Modal>
+
         </StyledDashContainer>
     );
 };
 
 function mapStateToProps (state) {
-    return {
-        tasks: state.tasks  
-    };
+  return {
+    tasks: state.tasks,
+    volunteers: state.volunteers
+  };
 };
 
 export default connect(mapStateToProps, { 
   addTask,
-  fetchTasks
+  fetchTasks,
+  fetchVolunteers
 })(AdminDash);
 
 
@@ -170,6 +154,7 @@ const StyledLeftSide = styled.div`
   padding: 3%;
   width: 47%;
   box-shadow: 0px 5px 8px lightgray;
+
   button {
     border: solid 1px #0096db;
     color: #0096db;
@@ -179,6 +164,7 @@ const StyledLeftSide = styled.div`
     cursor: pointer;
     outline: none;
   }
+
   button:hover {
     background-color: #0096db;
     color: white;
@@ -189,6 +175,7 @@ const StyledRightSide = styled.div`
   // border: solid 1px green;
   padding: 3%;
   width: 47%;
+
   input {
     margin-bottom: 5%;
     padding: 1.5%;
@@ -196,6 +183,7 @@ const StyledRightSide = styled.div`
     font-size: 1em;
     width: 80%;
   }
+  
   textarea {
     margin-bottom: 5%;
     padding: 1.5%;
@@ -203,6 +191,7 @@ const StyledRightSide = styled.div`
     font-size: 1em;
     width: 80%;
   }
+
   button {
     border: solid 1px #0096DB;
     color: #0096DB;
@@ -210,19 +199,24 @@ const StyledRightSide = styled.div`
     padding: 2% 4% 2% 4%;
     transition: .3s;
     outline: none;
-}
+  }
 
-button:disabled{
-    border: solid 1px lightgray;
-    color: lightgray;
-    cursor: not-allowed;
-}
+  button:disabled{
+      border: solid 1px lightgray;
+      color: lightgray;
+      cursor: not-allowed;
+  }
 
-button:hover:enabled {
-    background-color: #0096DB;
-    cursor: pointer;
-    color: white;
-}
+  button:hover:enabled {
+      background-color: #0096DB;
+      cursor: pointer;
+      color: white;
+  }
+`;
+
+const StyledEditTextDiv = styled.div`
+  width: 400px;
+  padding: 0 20px;
 `;
 
 const StyledError = styled.div`

@@ -16,7 +16,8 @@ const TaskListItem = (props) => {
       getVolunteerById(task.volunteer_id)
       .then(res => {
         setVolunteerName(res.data.username);
-      });
+      })
+      .catch(err => console.error(err));
     }
   }, [ task ]);
 

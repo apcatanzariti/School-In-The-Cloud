@@ -63,17 +63,22 @@ function Login(props) {
           credentials
         )
         .then((res) => {
+          const userData = res.data.message.replaceAll(`'`, `"`); // turn the single quotes into double quotes
+
           localStorage.setItem("token", JSON.stringify(res.data.token));
           localStorage.setItem(
             "role",
             JSON.stringify(JSON.parse(res.config.data).role)
           );
+          if (userData) {
+            localStorage.setItem('user', userData);
+          }
           props.setActiveLink(!props.activeLink);
           history.push(`/${credentials.role}-dash`);
           console.log(res);
         })
         .catch((err) => {
-          setError(err.response.data.error);
+          setError(err?.response?.data?.error);
         });
     }
   };

@@ -8,7 +8,9 @@ const taskSchema = yup.object().shape({
         .trim()
         .required("Description is required.")
         .min(DESCRIPTION_MIN, "Description is too short."),
-    title:yup.string()
+    volunteer_id:yup.number()
+        .required("You must assign to a volunteer."),
+    task_name:yup.string()
         .trim()
         .required("Title is required.")
         .min(TITLE_MIN, "Title is too short."),
