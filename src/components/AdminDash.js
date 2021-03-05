@@ -17,7 +17,7 @@ function AdminDash(props) {
 
   const [task, setTask] = useState({});
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [disabled, setDisabled] = useState(true);
 
   // For EditTask
