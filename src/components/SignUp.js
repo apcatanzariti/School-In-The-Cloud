@@ -1,38 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import signUp from './validation/signUpSchema.js'
-import { wait, waitFor } from '@testing-library/react';
 
 
 
-const initialCredentials = {
-    username: '',
-    password: '',
-    passwordconf: '',
-    role: '',
-}
+function SignUp() {
 
-function SignUp () {
+    const [credentials, setCredentials] = useState({
+        username: '',
+        password: '',
+        passwordconf: '',
+        role: ''
+    });
+  const [error, setError] = useState("");
+  const [activeForm, setActiveForm] = useState("");
+  const [disabled, setDisabled] = useState(true);
 
-    const [credentials, setCredentials] = useState(initialCredentials);
-    const [error, setError] = useState('');
-    const [activeForm, setActiveForm] = useState('');
-    const [disabled, setDisabled] = useState(true)
+  function changeActive(role) {
+    setActiveForm(role);
+    setCredentials({
+      ...credentials,
+      role: role,
+    });
+  }
 
-    const history = useHistory();
-
-    function changeActive (role) {
-        setActiveForm(role);
-        setCredentials({
-            ...credentials,
-            role: role
-        });
-    };
-
-    function handleChange (e) {
-        console.log(credentials)
+  function handleChange (e) {
+        // console.log(credentials)
         setCredentials({
             ...credentials,
             [e.target.name]: e.target.value
@@ -73,11 +67,32 @@ function SignUp () {
             .post('https://bw-backend-clouds.herokuapp.com/api/auth/register', axiosCredentials)
             .then(res => {
                 console.log(res);
+                // setCredentials({
+                //     username: '',
+                //     password: '',
+                //     passwordconf: '',
+                //     role: ''
+                // });
             })
             .catch(err => {
                 setError(err.response.data.error);
             })
         }
+    };
+
+    useEffect(() => {
+        signUp.isValid(credentials).then(valid => setDisabled(!valid))
+        signUp.validate(credentials)
+            .then(()=>{
+                setError('');
+            })
+            .catch((err)=>{
+                setError(err.errors[0])
+            })
+    }, [credentials]);
+
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
     return(
@@ -103,7 +118,7 @@ function SignUp () {
                 <input 
                 name='username'
                 type='text'
-                placeholder={`${activeForm} Username`}
+                placeholder={`Username`}
                 value={credentials.username}
                 onChange={handleChange}/>
                 </div>
@@ -112,7 +127,7 @@ function SignUp () {
                 <input 
                 name='password'
                 type='password'
-                placeholder={`${activeForm} Password`}
+                placeholder={`Password`}
                 value={credentials.password}
                 onChange={handleChange}/>
                 </div>
@@ -121,12 +136,12 @@ function SignUp () {
                 <input 
                 name='passwordconf'
                 type='password'
-                placeholder={`${activeForm} Password Confirmation`}
+                placeholder={`Password Confirmation`}
                 value={credentials.passwordconf}
                 onChange={handleChange}/>
                 </div>
 
-                <button disabled={disabled}>{`${activeForm} Register`}</button>
+                <button className='register' disabled={disabled}>{`${capitalizeFirstLetter(activeForm)} Register`}</button>
                 <button className='cancel' onClick={e => {e.stopPropagation(); setActiveForm(''); setError('');}}>Cancel</button>
 
                 {
@@ -145,7 +160,7 @@ export default SignUp;
 
 const StyledSignUpContainer = styled.div`
     // border: solid 1px red;
-    padding: 5% 0% 5% 0%;
+    padding: 9% 0% 9% 0%;
     width: 60%;
     text-align: center;
     box-shadow: 0px 0px 10px lightgray;
@@ -162,7 +177,7 @@ const StyledSignUpContainer = styled.div`
         outline: none;
     }
 
-    button {
+    .register {
             border: solid 1px #0096DB;
             color: #0096DB;
             background-color: white;
@@ -175,11 +190,19 @@ const StyledSignUpContainer = styled.div`
 
     .cancel {
         margin-left: 3%;
+        border: solid 1px red;
+        color: red;
+        background-color: white;
+        padding: 2% 4% 2% 4%;
+        transition: .3s;
+        cursor: pointer;
+        outline: none;
     }
 
     .cancel:hover {
         border: solid 1px red;
         background-color: red;
+        color: white;
     }
 
     div {
@@ -196,27 +219,33 @@ const StyledSignUpContainer = styled.div`
             width: 70%;
         }
 
+        button:hover {
+            cursor: pointer;
+            background-color: #0096DB;
+            color: white;
+        }
+
         h3 {
             margin-bottom: 4%;
         }
     }
 
-    button:disabled{
+    .register:disabled{
         border: solid 1px lightgray;
         color: lightgray;
         cursor: not-allowed;
     }
 
-    button:hover:enabled {
+    .register:hover:enabled {
         cursor: pointer;
         background-color: #0096DB;
         color: white;
     }
-    
+  }
 `;
 
 const StyledError = styled.div`
-    color: red;
-    width: 70%;
-    margin-top: 3%;
+  color: red;
+  width: 70%;
+  margin-top: 3%;
 `;

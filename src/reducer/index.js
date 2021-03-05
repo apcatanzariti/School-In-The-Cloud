@@ -8,31 +8,10 @@ export const initialState = {
   role: '',
   isFetching: false,
   fetchError: '',
-  volunteers: [],
-  // the stuff below here will be changing
-  activeAdmin: '',
-    activeStudent: '',
-    activeVolunteer: '',
-    admin: {
-        name: '',
-        taskList: [
-            {
-                id: '1',
-                title: 'task 1',
-                description: 'Do something!'
-            },
-            {
-                id: '2',
-                title: 'task 2',
-                description: 'Do something else!'
-            },
-            {
-                id: '3',
-                title: 'task 3',
-                description: 'Do a third thing!'
-            }
-        ]
-    }
+  volunteers: [
+    {id: 1, username: 'Brad Marchand', country: 'Boston Bruins'},
+    {id: 2, username: 'Patrice Bergeron', country: 'Boston Bruins'}
+  ]
 };
 
 const reducer = (state = initialState, action) => {
@@ -53,9 +32,7 @@ const reducer = (state = initialState, action) => {
     case ADD_TASK:
       return({
         ...state,
-        admin: {
-          taskList: [...state.admin.taskList, action.payload]
-          }
+        tasks: [ ...state.tasks, action.payload ]
       });
 
     case DELETE_TASK:

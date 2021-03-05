@@ -1,3 +1,6 @@
+
+import { axiosWithAuth } from '../utils/axiosWithAuth';
+
 export const FETCH_DATA = "FETCH_DATA";
 export const DATA_SUCCESSFUL = "DATA_SUCCESSFUL";
 export const DATA_FAILURE = "DATA_FAILURE";
@@ -22,14 +25,14 @@ export const FETCH_VOLUNTEERS_FAIL = 'FETCH_VOLUNTEERS_LOADING';
 //     })
 // };
 
-/* --------------------fetching tasks for the volunteer dash------------------
+/* --------------------fetching tasks for the volunteer dash------------------ */
 
 export const fetchTasks = () => dispatch => {
 
     dispatch(fetchTaskLoading());
 
     axiosWithAuth()
-    .get('/api/tasks')
+    .get('/api/volunteers/tasks')
     .then((res) => {
         dispatch(fetchTaskSuccess(res.data));
     })
@@ -50,16 +53,16 @@ export const fetchTaskFail = (error) => {
     return ({ type: FETCH_TASK_FAIL, payload: error });
 };
 
--------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------ */
 
-/* -----------fetching volunteers for the student dash-----------------------
+/* -----------fetching volunteers for the student dash---------------------*/
 
 export const fetchVolunteers = () => dispatch => {
 
     dispatch(fetchVolunteersLoading());
 
     axiosWithAuth()
-    .get('/api/volunteers')
+    .get('/api/student/volunteers')
     .then((res) => {
         dispatch(fetchVolunteersSuccess(res.data));
     })
@@ -68,19 +71,19 @@ export const fetchVolunteers = () => dispatch => {
     })
 };
 
-export const fetchVolunteersLoading = () => {
+const fetchVolunteersLoading = () => {
     return ({ type: FETCH_VOLUNTEERS_LOADING });
 };
 
-export const fetchVolunteersSuccess = (volunteer) => {
+const fetchVolunteersSuccess = (volunteer) => {
     return ({ type: FETCH_VOLUNTEERS_SUCCESS, payload: volunteer });
 };
 
-export const fetchVolunteersFail = (error) => {
+const fetchVolunteersFail = (error) => {
     return ({ type: FETCH_VOLUNTEERS_FAIL, payload: error });
 };
 
--------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------ */
 
 export const setActiveAdmin = (user) => {
     return({
@@ -96,7 +99,7 @@ export const addTask = (task) => {
     });
 };
 
-const removeTask = (taskToDelete) => {
+export const removeTask = (taskToDelete) => {
     return({
         type: DELETE_TASK,
         payload: taskToDelete
