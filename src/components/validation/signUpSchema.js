@@ -9,7 +9,7 @@ const signUp = yup.object().shape({
         .min(PASSWORD_MIN, "Password confirmation too short.")
         //.oneOf([yup.ref('password'), null], "Passwords must match.")
         .test('test-name', 'Passwords must match.', function(value) {
-            return this.parent.password == this.parent.passwordconf ? true : false;
+            return this.parent.password === this.parent.passwordconf ? true : false;
         }),
     password:yup.string()
         .required("Password is required.")

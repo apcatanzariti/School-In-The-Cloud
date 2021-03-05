@@ -8,7 +8,10 @@ export const initialState = {
   role: '',
   isFetching: false,
   fetchError: '',
-  volunteers: [],
+  volunteers: [
+    {id: 1, username: 'Brad Marchand', country: 'Boston Bruins'},
+    {id: 2, username: 'Patrice Bergeron', country: 'Boston Bruins'}
+  ]
 };
 
 const reducer = (state = initialState, action) => {
