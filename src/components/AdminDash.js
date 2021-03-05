@@ -6,19 +6,16 @@ import Modal from "./Modal";
 import EditTask from "./EditTask";
 import taskSchema from "./validation/addTaskSchema.js"
 
-import { addTask, fetchTasks } from "./../actions/index";
+import { addTask, fetchTasks, fetchVolunteers } from "./../actions/index";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 
 
 function AdminDash(props) {
 
-  const { tasks, fetchTasks } = props;
+  const { tasks, fetchTasks, addTask, volunteers, fetchVolunteers } = props;
 
-  const [task, setTask] = useState({
-    id: Date.now(),
-    title: "",
-    description: "",
-  });
+  const [task, setTask] = useState({});
 
   const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(true);
@@ -29,32 +26,20 @@ function AdminDash(props) {
 
   useEffect(() => {
     fetchTasks && fetchTasks();
-  }, [ fetchTasks ]);
+    fetchVolunteers && fetchVolunteers();
+  }, [ fetchTasks, fetchVolunteers ]);
 
-  function handleChange(e) {
-    setTask({
-      ...task,
-      [e.target.name]: e.target.value,
-    });
-    setTask((state)=>{
-      taskSchema.isValid(state).then(valid => setDisabled(!valid))
-      taskSchema.validate(state)
-      .then(()=>{
-          setError('');
-      })
-      .catch((err)=>{
-          setError(err.errors[0])
-      })
-      return state
-  })
-  }
+  function handleAddTask(task) {
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    props.addTask(task);
+    axiosWithAuth()
+      .post('/api/admin/tasks', task)
+      .then(res => console.log(res))
+      .catch(err => console.error(err));
+
+    addTask(task);
     setTask({
-    title: "",
-    description: "",
+      title: "",
+      description: "",
     });
   }
     
@@ -70,7 +55,7 @@ function AdminDash(props) {
   }
 
   // Saves changes to the task being edited. (Doesn't actually do anything yet)
-  function saveTask(savedTask) {
+  function handleEditTask(savedTask) {
     const id = savedTask.id;
     console.log(`saving changes to task with id: ${id}`, savedTask);
     setEditModalOpen(false);
@@ -107,54 +92,49 @@ function AdminDash(props) {
 
     return(
         <StyledDashContainer>
+
             <StyledLeftSide>
                 <h3>Here is a list of your current tasks:</h3>
-
                 <TaskList tasks={tasks} handleDelete={handleDelete} handleEdit={handleEdit}/>
-                
             </StyledLeftSide>
 
             <StyledRightSide>
                 <h1>Add a new task here</h1>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <input
-                        name='title'
-                        type='text'
-                        value={task.title}
-                        placeholder='Title'
-                        onChange={handleChange}/>
-                    </div>
-
-                    <div>
-                        <textarea
-                        name='description'
-                        value={task.description}
-                        placeholder='Description...'
-                        rows='5'
-                        onChange={handleChange}/>
-                    </div>
-
-                    <button disabled={disabled}>Add Task</button>
-                    <StyledError>{error}</StyledError>
-                </form>
+                <EditTask
+                  originalTask={task}
+                  onSubmit={handleAddTask}
+                  volunteers={volunteers}
+                  buttonText={'Add Task'}
+                />
             </StyledRightSide>
+
             <Modal open={editModalOpen} setOpen={setEditModalOpen}>
-                <EditTask task={taskBeingEdited} saveTask={saveTask} />
+              <StyledEditTextDiv>
+                <h2>Edit a Task</h2>
+                <EditTask
+                  originalTask={taskBeingEdited}
+                  volunteers={volunteers}
+                  onSubmit={handleEditTask}
+                  buttonText={'Save Changes'}
+                />
+              </StyledEditTextDiv>
             </Modal>
+
         </StyledDashContainer>
     );
 };
 
 function mapStateToProps (state) {
-    return {
-        tasks: state.tasks  
-    };
+  return {
+    tasks: state.tasks,
+    volunteers: state.volunteers
+  };
 };
 
 export default connect(mapStateToProps, { 
   addTask,
-  fetchTasks
+  fetchTasks,
+  fetchVolunteers
 })(AdminDash);
 
 
@@ -170,6 +150,7 @@ const StyledLeftSide = styled.div`
   padding: 3%;
   width: 47%;
   box-shadow: 0px 5px 8px lightgray;
+
   button {
     border: solid 1px #0096db;
     color: #0096db;
@@ -179,6 +160,7 @@ const StyledLeftSide = styled.div`
     cursor: pointer;
     outline: none;
   }
+
   button:hover {
     background-color: #0096db;
     color: white;
@@ -189,6 +171,7 @@ const StyledRightSide = styled.div`
   // border: solid 1px green;
   padding: 3%;
   width: 47%;
+
   input {
     margin-bottom: 5%;
     padding: 1.5%;
@@ -196,6 +179,7 @@ const StyledRightSide = styled.div`
     font-size: 1em;
     width: 80%;
   }
+  
   textarea {
     margin-bottom: 5%;
     padding: 1.5%;
@@ -203,6 +187,7 @@ const StyledRightSide = styled.div`
     font-size: 1em;
     width: 80%;
   }
+
   button {
     border: solid 1px #0096DB;
     color: #0096DB;
@@ -210,19 +195,24 @@ const StyledRightSide = styled.div`
     padding: 2% 4% 2% 4%;
     transition: .3s;
     outline: none;
-}
+  }
 
-button:disabled{
-    border: solid 1px lightgray;
-    color: lightgray;
-    cursor: not-allowed;
-}
+  button:disabled{
+      border: solid 1px lightgray;
+      color: lightgray;
+      cursor: not-allowed;
+  }
 
-button:hover:enabled {
-    background-color: #0096DB;
-    cursor: pointer;
-    color: white;
-}
+  button:hover:enabled {
+      background-color: #0096DB;
+      cursor: pointer;
+      color: white;
+  }
+`;
+
+const StyledEditTextDiv = styled.div`
+  width: 400px;
+  padding: 0 20px;
 `;
 
 const StyledError = styled.div`

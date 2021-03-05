@@ -5,7 +5,6 @@ import styled from "styled-components";
 import TaskListItem from './TaskListItem';
 
 function TaskList(props) {
-  console.log(props);
 
   const { tasks, handleDelete, handleEdit } = props;
 
