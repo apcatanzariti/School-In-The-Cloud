@@ -31,71 +31,75 @@ function AdminDash(props) {
 
   function handleAddTask(task) {
 
-    axiosWithAuth()
-      .post('/api/admin/tasks', task)
-      .then(res => console.log(res))
-      .catch(err => console.error(err));
+    const axiosTask = {
+      ...task,
+      admin_id: JSON.parse(localStorage.getItem('user'))?.id
+    };
 
-    addTask(task);
-    setTask({
-      title: "",
-      description: "",
-    });
+    console.log(axiosTask);
+
+    axiosWithAuth()
+      .post('/api/admin/tasks', axiosTask)
+      .then(res => {
+        console.log(res);
+        setTask({});
+        fetchTasks();
+      })
+      .catch(err => console.error(err));
   }
     
   function handleDelete(id) {
-    // this will eventually do some actual deleting
-    console.log(`the task with the id of: ${id} was deleted!`);
+    axiosWithAuth()
+      .delete(`/api/admin/tasks/${id}`)
+      .then(res => {
+        console.log(res);
+        fetchTasks();
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  // Saves changes to the task being edited.
+  function handleEditTask(editedTask) {
+
+    setEditModalOpen(false);
+    const id = editedTask.id;
+
+    axiosWithAuth()
+      .put(`/api/admin/tasks/${id}`, editedTask)
+      .then(res => {
+        console.log(res);
+        fetchTasks();
+      })
+      .catch(err => {
+        console.error(err);
+      })
   }
 
   // Sets the task being edited and opens the modal to edit it.
-  function handleEdit(task) {
+  function openEditTask(task) {
     setTaskBeingEdited(task);
     setEditModalOpen(true);
   }
 
-  // Saves changes to the task being edited. (Doesn't actually do anything yet)
-  function handleEditTask(savedTask) {
-    const id = savedTask.id;
-    console.log(`saving changes to task with id: ${id}`, savedTask);
-    setEditModalOpen(false);
-  }
-
   useEffect(() => {
-      taskSchema.isValid(task).then(valid => setDisabled(!valid))
-      taskSchema.validate(task)
-          .then(()=>{
-              setError('');
-          })
-          .catch((err)=>{
-              setError(err.errors[0])
-          })
+    taskSchema.isValid(task).then(valid => setDisabled(!valid))
+    taskSchema.validate(task)
+      .then(()=>{
+        setError('');
+      })
+      .catch((err)=>{
+        setError(err.errors[0])
+      })
   }, [task])
-
-    // function submitNewTask(e) {
-    //     e.preventDefault();
-
-    //     if (newTask.title === '' || newTask.description === '') {
-    //         setError('All fields must be filled out')
-    //     } else {
-    //         axios
-    //         .post('http://localhost:5000/api/tasks', newTask)
-    //         .then(res => {
-    //           props.setTaskList(res.data);
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         })
-    //         setIsAdding: false;
-    //     }
-    // };
 
     return(
         <StyledDashContainer>
 
             <StyledLeftSide>
                 <h3>Here is a list of your current tasks:</h3>
-                <TaskList tasks={tasks} handleDelete={handleDelete} handleEdit={handleEdit}/>
+                <TaskList tasks={tasks} handleDelete={handleDelete} handleEdit={openEditTask}/>
             </StyledLeftSide>
 
             <StyledRightSide>

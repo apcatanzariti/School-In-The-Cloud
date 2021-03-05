@@ -53,7 +53,7 @@ export const fetchTaskFail = (error) => {
     return ({ type: FETCH_TASK_FAIL, payload: error });
 };
 
-/* -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------ */
 
 /* -----------fetching volunteers for the student dash---------------------*/
 
