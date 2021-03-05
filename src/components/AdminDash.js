@@ -14,6 +14,8 @@ function AdminDash(props) {
 
   const { tasks, fetchTasks } = props;
 
+  const myId = localStorage.getItem('user')?.id;
+
   const [task, setTask] = useState({
     id: Date.now(),
     title: "",
@@ -52,10 +54,7 @@ function AdminDash(props) {
   function handleSubmit(e) {
     e.preventDefault();
     props.addTask(task);
-    setTask({
-    title: "",
-    description: "",
-    });
+    setTask({});
   }
     
   function handleDelete(id) {
@@ -77,41 +76,21 @@ function AdminDash(props) {
   }
 
   useEffect(() => {
-      taskSchema.isValid(task).then(valid => setDisabled(!valid))
-      taskSchema.validate(task)
-          .then(()=>{
-              setError('');
-          })
-          .catch((err)=>{
-              setError(err.errors[0])
-          })
+    taskSchema.isValid(task).then(valid => setDisabled(!valid))
+    taskSchema.validate(task)
+      .then(()=>{
+        setError('');
+      })
+      .catch((err)=>{
+        setError(err.errors[0])
+      })
   }, [task])
-
-    // function submitNewTask(e) {
-    //     e.preventDefault();
-
-    //     if (newTask.title === '' || newTask.description === '') {
-    //         setError('All fields must be filled out')
-    //     } else {
-    //         axios
-    //         .post('http://localhost:5000/api/tasks', newTask)
-    //         .then(res => {
-    //           props.setTaskList(res.data);
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         })
-    //         setIsAdding: false;
-    //     }
-    // };
 
     return(
         <StyledDashContainer>
             <StyledLeftSide>
                 <h3>Here is a list of your current tasks:</h3>
-
                 <TaskList tasks={tasks} handleDelete={handleDelete} handleEdit={handleEdit}/>
-                
             </StyledLeftSide>
 
             <StyledRightSide>

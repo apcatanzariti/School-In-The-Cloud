@@ -9,6 +9,7 @@ function NavBar({ activeLink, setActiveLink }) {
     // console.log('You logged out 👍');
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem('user');
     setActiveLink(!activeLink);
     history.push("/");
   };
