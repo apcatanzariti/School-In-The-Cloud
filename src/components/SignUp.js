@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import signUp from './validation/signUpSchema.js'
-import { wait, waitFor } from '@testing-library/react';
 
 
 
@@ -18,8 +16,6 @@ function SignUp() {
   const [error, setError] = useState("");
   const [activeForm, setActiveForm] = useState("");
   const [disabled, setDisabled] = useState(true);
-
-  const history = useHistory();
 
   function changeActive(role) {
     setActiveForm(role);
