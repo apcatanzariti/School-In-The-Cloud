@@ -50,7 +50,7 @@ function AdminDash(props) {
     
   function handleDelete(id) {
     axiosWithAuth()
-      .delete(`/api/admin/tasks/${id}`)
+      .delete(`/api/volunteers/tasks/${id}`)
       .then(res => {
         console.log(res);
         fetchTasks();
@@ -67,7 +67,7 @@ function AdminDash(props) {
     const id = editedTask.id;
 
     axiosWithAuth()
-      .put(`/api/admin/tasks/${id}`, editedTask)
+      .put(`/api/admin/${id}/tasks`, editedTask)
       .then(res => {
         console.log(res);
         fetchTasks();

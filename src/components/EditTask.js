@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import taskSchema from "./validation/addTaskSchema.js";
 
@@ -7,9 +7,13 @@ function EditTask(props) {
 
   const { originalTask, volunteers, onSubmit, buttonText } = props;
 
-  const [ task, setTask ] = useState({ ...originalTask });
+  const [ task, setTask ] = useState({});
   const [error, setError] = useState('');
   const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    setTask(originalTask);
+  }, [ originalTask ]);
 
   function handleChange(e) {
       setTask({
@@ -30,8 +34,8 @@ function EditTask(props) {
   };
   
   function handleSubmit(e) {
-      e.preventDefault();
-      onSubmit(task);
+    e.preventDefault();
+    onSubmit(task);
   }
 
   return (
@@ -55,7 +59,7 @@ function EditTask(props) {
           >
             <option value=''> -- Assign to a volunteer --</option>
             {volunteers?.map(volunteer => (
-              <option value={volunteer.id} key={volunteer.id}>{volunteer.username}</option>
+              <option value={volunteer.volunteer_id} key={volunteer.volunteer_id}>{volunteer.username}</option>
             ))}
           </select>
         </div>
