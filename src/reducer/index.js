@@ -9,8 +9,8 @@ export const initialState = {
   isFetching: false,
   fetchError: '',
   volunteers: [
-    {id: 1, username: 'Brad Marchand', country: 'Boston Bruins'},
-    {id: 2, username: 'Patrice Bergeron', country: 'Boston Bruins'}
+    {volunteer_id: 1, username: 'Brad Marchand', country: 'Boston Bruins'},
+    {volunteer_id: 2, username: 'Patrice Bergeron', country: 'Boston Bruins'}
   ]
 };
 

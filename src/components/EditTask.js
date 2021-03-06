@@ -16,21 +16,24 @@ function EditTask(props) {
   }, [ originalTask ]);
 
   function handleChange(e) {
-      setTask({
-          ...task,
-          [e.target.name]: e.target.value
-      });
-      setTask((state)=>{
-          taskSchema.isValid(state).then(valid => setDisabled(!valid))
-          taskSchema.validate(state)
-          .then(()=>{
-              setError('');
-          })
-          .catch((err)=>{
-              setError(err.errors[0])
-          })
-          return state
+
+    setTask({
+      ...task,
+      [e.target.name]: e.target.value
+    });
+    
+    setTask((state)=>{
+      taskSchema.isValid(state).then(valid => setDisabled(!valid))
+      taskSchema.validate(state)
+      .then(()=>{
+        setError('');
       })
+      .catch((err)=>{
+        setError(err.errors[0])
+      })
+      return state
+    });
+    
   };
   
   function handleSubmit(e) {

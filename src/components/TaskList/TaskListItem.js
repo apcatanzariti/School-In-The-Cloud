@@ -26,7 +26,7 @@ const TaskListItem = (props) => {
       <p className="name">{task.task_name}</p>
       <p className="description">{task.description}</p>
       {volunteerName &&
-        <p className="assignee">Assigned to {volunteerName}</p>
+        <p className="volunteer">Assigned to {volunteerName}</p>
       }
       <div className='button-row'>
         {handleDelete &&
@@ -65,7 +65,7 @@ const StyledTaskListItemDiv = styled.div`
     font-weight: bold;
   }
 
-  .creator {
+  .volunteer {
     color: gray;
     font-style: italic;
   }
