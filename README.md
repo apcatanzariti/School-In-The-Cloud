@@ -4,7 +4,13 @@
 
 ## [🌐 Live Website](https://school-in-the-cloud-pied.vercel.app/)
 
-## [🎞️ Demo Video](https://www.youtube.com/watch?v=2jbTWIWxLdg)
+## 🎞️ Demo Video
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=2jbTWIWxLdg
+" target="_blank"><img src="http://img.youtube.com/vi/2jbTWIWxLdg/0.jpg" 
+alt="School in the Cloud Demo" width="240" height="180" border="10" /></a>
+
+---
 
 ## 📝 Proposal
 School in the Cloud is a platform that trains senior volunteers to teach students in a group or individual setting. This helps kids in communities with high student to teacher ratios. The platform also connects volunteers with the students. The aim is to help close the achievement gap by connecting students with available, qualified volunteer mentors.
@@ -18,6 +24,7 @@ School in the Cloud is a platform that trains senior volunteers to teach student
 ## 🛠 Tech Stack / Frameworks
 - **Front End:** React, JavaScript, React Testing Library
 - **Back End:** Node, Express, Knex, Heroku, Postgres
+- **Collaboration:** GitHub, Slack, Lucidchart
 
 ## 💻 Dev Team
 - Pat Jean
