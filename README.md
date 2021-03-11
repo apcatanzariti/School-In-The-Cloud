@@ -2,13 +2,10 @@
 
 ![buildweek-1-homePage](https://user-images.githubusercontent.com/22039228/110830191-cab6c380-824d-11eb-84f6-d6dbd3ca2967.png)
 
-## [🌐 Live Website](https://school-in-the-cloud-pied.vercel.app/)
+## 👀 Take a Look
 
-## 🎞️ Demo Video
-
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=2jbTWIWxLdg
-" target="_blank"><img src="http://img.youtube.com/vi/2jbTWIWxLdg/0.jpg" 
-alt="School in the Cloud Demo" width="240" height="180" border="10" /></a>
+- [🎞️ Demo Video](http://www.youtube.com/watch?feature=player_embedded&v=2jbTWIWxLdg)
+- [🌐 Live Website](https://school-in-the-cloud-pied.vercel.app/)
 
 ---
 
