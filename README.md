@@ -24,8 +24,8 @@ School in the Cloud is a platform that trains senior volunteers to teach student
 - **Collaboration:** GitHub, Slack, Lucidchart
 
 ## 💻 Dev Team
-- Jacob Stephens
-- Pat Jean
-- Anthony Catanzariti
-- Stav Corcos
-- Jonathan Fox
+- [Jacob Stephens](https://github.com/Jacobstephens17)
+- [Pat Jean](https://github.com/PhatherJean)
+- [Anthony Catanzariti](https://github.com/apcatanzariti)
+- [Stav Corcos](https://github.com/Poonchy)
+- [Jonathan Fox](https://github.com/jfox16)
